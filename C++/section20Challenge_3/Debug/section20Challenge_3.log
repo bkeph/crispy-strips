@@ -1,0 +1,4 @@
+﻿  section20Challenge_3.cpp
+X:\Learning\C++\Udemy.Beginning.C++.Programming.From.Beginner.to.Beyond\section20Challenge_3\section20Challenge_3.cpp(137): warning C4715: 'removeSymbolsFromString': not all control paths return a value
+X:\Learning\C++\Udemy.Beginning.C++.Programming.From.Beginner.to.Beyond\section20Challenge_3\section20Challenge_3.cpp(101): warning C4715: 'countWordAppearences': not all control paths return a value
+  section20Challenge_3.vcxproj -> X:\Learning\C++\Udemy.Beginning.C++.Programming.From.Beginner.to.Beyond\section20Challenge_3\Debug\section20Challenge_3.exe

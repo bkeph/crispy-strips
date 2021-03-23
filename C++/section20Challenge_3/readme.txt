@@ -1,0 +1,1 @@
+Counts appearances of all the words present in a given file, in a sorted manner, along with the lines on which a word appears.
