@@ -18,7 +18,8 @@ int main()
     std::vector<std::string> vectOfFileNames;
     size_t numberOfFiles{};
 
-    std::cout << std::boolalpha; // TO DELETE
+    std::cout << "Concatenation process has started. Please wait..." << std::endl;
+
 
     if(constructFileList(numberOfFiles, vectOfFileNames) == 0) return 0; // return 0 if failed
 
@@ -53,8 +54,6 @@ int constructFileList(size_t& numberOfFiles, std::vector<std::string>& vectOfFil
             std::cerr << "Type was not specified for at least 1 file name. Please edit input.txt." << std::endl;
             return 0;
         }
-
-        //std::cout << '|' << vectOfFileNames.at(numberOfFiles) << '|' << " " << checkFileType(vectOfFileNames.at(numberOfFiles)) << std::endl; // TO DELETE
 
         ++numberOfFiles;
     }
