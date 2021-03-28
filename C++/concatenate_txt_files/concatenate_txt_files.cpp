@@ -41,6 +41,7 @@ int constructFileList(size_t& numberOfFiles, std::vector<std::string>& vectOfFil
     {
         std::cerr << "input.txt FILE NOT FOUND in the current directory" << std::endl;
         system("pause");
+        return 0;
     }
         
 
