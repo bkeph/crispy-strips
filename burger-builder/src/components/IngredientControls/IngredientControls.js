@@ -1,7 +1,7 @@
 import IngredientControl from "./IngredientControl/IngredientControl";
 import CSSModule from './IngredientControls.module.css';
 import StateManager from '../StateManager/StateManager';
-import Button from "./IngredientControl/Button/Button";
+import Button from "../UI/Button/Button";
 import { useContext } from "react";
 
 const IngredientControls = () => {

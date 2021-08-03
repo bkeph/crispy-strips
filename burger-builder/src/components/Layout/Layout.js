@@ -1,12 +1,11 @@
 import {Fragment} from 'react';
 import CSSModule from '../Layout/Layout.module.css';
+import Toolbar from '../UI/Navigation/Toolbar/Toolbar';
 
 const Layout = (props) => {
     return (
         <Fragment>
-            <div>
-                Toolbar, Sidebar, Backdrop
-            </div>
+            <Toolbar />
 
             {/* Using this component as a wrapper for the other components to be rendered */}
             <main className = {CSSModule.Layout}>

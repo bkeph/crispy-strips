@@ -1,6 +1,6 @@
 import CSSModule from './OrderSummary.module.css';
 import Burger from '../Burger';
-import Button from '../../IngredientControls/IngredientControl/Button/Button';
+import Button from '../../UI/Button/Button';
 import { useContext } from "react";
 import StateManager from '../../StateManager/StateManager';
 
@@ -77,7 +77,8 @@ const OrderSummary = (props) => {
 
                 {/* Order button */}
                 <Button
-                    style = {{...buttonAdjacentStyling, backgroundImage: "linear-gradient(rgba(186, 255, 130, 0.5), rgba(30, 255, 0, 0.25))"}}>
+                    style = {{...buttonAdjacentStyling, backgroundImage: "linear-gradient(rgba(186, 255, 130, 0.5), rgba(30, 255, 0, 0.25))"}}
+                    onClick = {context.orderHandler}>
                     Order
                 </Button>
             </div>

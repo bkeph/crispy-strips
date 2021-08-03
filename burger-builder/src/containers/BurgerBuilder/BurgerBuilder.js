@@ -85,7 +85,11 @@ class BurgerBuilder extends Component {
         state
             ? this.setState({ showModal: false })
             : this.setState({ showModal: true });
-    };
+    }
+
+    orderHandler = () => {
+        alert("Ordered successfully!");
+    }
     
     render() {
         return(
@@ -100,7 +104,8 @@ class BurgerBuilder extends Component {
                             isPurchasable: this.state.isPurchasable,
                             ingredientHandler: this.ingredientHandler,
                             showModal: this.state.showModal,
-                            displayModalHandler: this.displayModalHandler
+                            displayModalHandler: this.displayModalHandler,
+                            orderHandler: this.orderHandler
                         }
                     }>
                         <Modal 
