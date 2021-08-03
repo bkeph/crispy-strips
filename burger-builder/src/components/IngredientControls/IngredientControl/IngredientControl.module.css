@@ -1,0 +1,20 @@
+.ingredientDetails {
+    padding: 4px;
+    border-bottom: 1px solid #ccc;
+    display: flex;
+    flex-basis: 50%;
+    flex-shrink: 1;
+    flex-grow: 1;
+}
+
+.ingredientGroup {
+    display: flex;
+    margin: 20px 18px;
+}
+
+.ingredientName {
+    display: flex;
+    flex-basis: 25%;
+    flex-grow: 1;
+    flex-shrink: 0;
+}

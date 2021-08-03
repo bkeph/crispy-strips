@@ -1,0 +1,59 @@
+.BurgerWrapper {
+    /* display vertical scrollbar only when needed */
+    overflow-y: auto; 
+    text-align: center;
+    font-weight: bold;
+    font-size: 1.2rem;
+    height: 300px;
+    padding: 20px 0px;
+    box-shadow: 0px 0px 10px -5px rgb(167, 167, 167);
+    margin: 0px 16px 30px 16px;
+    border-radius: 6px;
+    background-color: rgb(250, 250, 250);
+    box-sizing: border-box;
+    align-items: center;
+
+    display: flex;
+}
+
+.Burger {
+    margin: 0 auto;
+    max-height: 100%;
+    box-sizing: border-box;
+    overflow-y: auto;
+}
+
+@media (min-width: 480px) {
+    .BurgerWrapper {
+        max-width: 450px;
+        margin: 0px auto 30px auto;
+    }
+}
+
+.BurgerWrapperAlt {
+    height: auto;
+}
+
+/* @media (min-width: 1000px) and (min-height: 800px)
+{
+    .BurgerWrapper {
+        width: 700px;
+        height: 600px;
+    }
+} */
+
+/* @media (min-width: 450px) and (min-height: 401px)
+{
+    .BurgerWrapper {
+        width: 450px;
+        height: 400px;
+    }
+} */
+
+/* @media (min-width: 350px) and (min-height: 400px)
+{
+    .BurgerWrapper {
+        width: 350px;
+        height: 300px;
+    }
+} */

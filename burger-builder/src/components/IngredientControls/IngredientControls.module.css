@@ -1,0 +1,31 @@
+.IngredientControls {
+    margin: 16px;
+    padding: 16px 20px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    box-sizing: border-box;
+}
+
+.priceData {
+    border-bottom: 1px solid #ccc;
+    padding: 4px;
+    font-weight: 700;
+    background-color: #eee;
+    border-radius: 4px;
+    margin: 16px 20px;
+    
+    display: flex;
+    flex-grow: 1;
+}
+
+.priceLabel {
+    flex-basis: 10%;
+    flex-grow: 1;
+}
+
+@media (min-width: 650px) {
+    .IngredientControls {
+        max-width: 585px;
+        margin: auto;
+    }
+}
