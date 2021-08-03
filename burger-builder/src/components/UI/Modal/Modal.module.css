@@ -1,11 +1,11 @@
 .Modal {
-    position: fixed;
-    display: flex;
-    top: 10%;
+    position: absolute;
+    /* display: inline-flex; */
+    top: 5%;
     left: 50%;
-    width: 50%;
-    height: 75%;
+    /* width: 50%; */
+    height: 75vh;
     z-index: 2;
-    transform: translateX(-50%);
+    transform: translate(-50%);
     transition: opacity 500ms, transform 500ms;
 }

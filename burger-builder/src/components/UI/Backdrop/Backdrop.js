@@ -6,10 +6,9 @@ import CSSModule from './Backdrop.module.css';
 //         : null;
 
 const Backdrop = (props) => {
-        console.log(props.onClick);
-        return props.showBackdrop 
-                ? <div className = {CSSModule.Backdrop} onClick = {props.onClick} /> 
-                : null;
+    return props.showBackdrop 
+        ? <div className = {CSSModule.Backdrop} onClick = {props.onClick} />
+        : null;
 }
 
 

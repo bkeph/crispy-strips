@@ -15,7 +15,7 @@ const OrderSummary = (props) => {
 
     const context = useContext(StateManager);
 
-    const buildCheckoutModal = () => {
+    const listIngredients = () => {
         let checkoutModalData = [];
 
         for (const key in props.ingredients) {
@@ -39,29 +39,48 @@ const OrderSummary = (props) => {
     return(
         <div className = {CSSModule.OrderSummary}>
 
+            {/* Modal title */}
             <div className = {CSSModule.Title}>
                 Order Summary
             </div>
+
             <div className = {CSSModule.Wrapper}>
 
+                {/* Burger picture */}
                 <Burger 
                     ingredients = {props.ingredients}
                     finalSnapshot = {true}/>
 
-                {buildCheckoutModal()}
-            </div>
-                <div className = {CSSModule.ButtonsWrapper}>
-                    <Button
-                        style = {buttonAdjacentStyling}
-                        onClick = {context.displayModalHandler}>
-                        Close
-                    </Button>
+                {/* List of ingredients */}
+                {listIngredients()}
 
-                    <Button
-                        style = {{...buttonAdjacentStyling, backgroundImage: "linear-gradient(rgba(186, 255, 130, 0.5), rgba(30, 255, 0, 0.25))"}}>
-                        Order
-                    </Button>
+                {/* Final price */}
+                <div className = {CSSModule.priceData}>
+                    <div className = {CSSModule.priceLabel}>
+                        Price
+                    </div>
+
+                    <div>
+                        {context.totalPrice} $
+                    </div>
                 </div>
+            </div>
+
+            {/* Wrapper of buttons */}
+            <div className = {CSSModule.ButtonsWrapper}>
+                {/* Close button */}
+                <Button
+                    style = {buttonAdjacentStyling}
+                    onClick = {context.displayModalHandler}>
+                    Close
+                </Button>
+
+                {/* Order button */}
+                <Button
+                    style = {{...buttonAdjacentStyling, backgroundImage: "linear-gradient(rgba(186, 255, 130, 0.5), rgba(30, 255, 0, 0.25))"}}>
+                    Order
+                </Button>
+            </div>
 
             
         </div>
