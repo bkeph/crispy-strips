@@ -1,0 +1,17 @@
+.Sidedrawer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    max-width: 70%;
+    height: 70%;
+    background-color: red;
+    z-index: 3;
+}
+
+.Open {
+
+}
+
+.Close {
+    
+}

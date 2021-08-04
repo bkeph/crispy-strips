@@ -10,4 +10,11 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+    padding: 0px 20px;
+    box-sizing: border-box; /* make elements fit inside */
+    z-index: 3;
+}
+
+.Toolbar nav {
+    height: 100%;
 }
