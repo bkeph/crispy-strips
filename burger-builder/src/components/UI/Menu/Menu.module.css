@@ -1,0 +1,8 @@
+.Menu {
+    height: 26px;
+    width: 26px;
+}
+
+.Menu:hover {
+    cursor: pointer;
+}

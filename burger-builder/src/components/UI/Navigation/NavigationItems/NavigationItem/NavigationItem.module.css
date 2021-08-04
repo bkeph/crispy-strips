@@ -3,7 +3,7 @@
     background-color: rgb(254, 254, 254);
     display: flex;
     align-items: center;
-    border-bottom: 3px solid transparent;
+    /* border-bottom: 3px solid transparent; */
     box-sizing: border-box;
 }
 
@@ -13,21 +13,41 @@
     height: 100%;
     color: black;
     text-decoration: none;
-    padding: 0 14px;
+    padding:  10px 14px;
+    box-sizing: border-box;
+    border-bottom: 3px solid transparent;
 }
 
 .NavigationItem a.active {
     border-bottom: 6px solid rgb(233, 158, 87);
+    /* box-sizing: border-box; */
     background-color: rgb(244, 244, 244);
 }
 
 .NavigationItem a:active {
     background-color: rgb(226, 226, 226);
-    border-bottom: 6px solid rgb(233, 158, 87);
+    /* border-bottom: 6px solid rgb(233, 158, 87); */
     transition: border-bottom 100ms, background-color 50ms;
 }
 
-.NavigationItem:hover {
+.NavigationItem a:hover {
     border-bottom: 3px solid rgb(233, 158, 87);
     transition: border-bottom 100ms;
+}
+
+.NavigationItem a.active:hover {
+    border-bottom: 6px solid rgb(233, 158, 87);
+    transition: border-bottom 100ms;
+}
+
+@media (max-width: 400px) {
+    .NavigationItem a {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }
+
+    .NavigationItem {
+        margin: 12px 0px;
+    }
 }

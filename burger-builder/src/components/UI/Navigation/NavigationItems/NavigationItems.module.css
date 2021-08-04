@@ -2,4 +2,12 @@
     height: 100%;
     display: flex;
     margin: 0;
+    padding: 0;
+}
+
+@media (max-width: 400px) {
+    .NavigationItems {
+        flex-direction: column;
+        width: auto;
+    }
 }

@@ -18,3 +18,10 @@
 .Toolbar nav {
     height: 100%;
 }
+
+@media (max-width: 400px) {
+    .NavigationItems,
+    .Menu {
+        display: none;
+    }
+}
