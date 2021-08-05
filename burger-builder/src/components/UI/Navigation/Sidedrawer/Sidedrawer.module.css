@@ -4,14 +4,15 @@
     left: 0;
     max-width: 70%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.548);
-    z-index: 3;
+    background-color: rgba(0, 0, 0, 0.6);
+    z-index: 4;
     display: flex;
     flex-direction: column;
     box-shadow: 0px 2px 6px -2px rgb(138, 138, 138);
     padding: 0px 20px;
     box-sizing: border-box;
-    transition: transform 1s;
+    transition: transform 750ms;
+    backdrop-filter: blur(2px);
 }
 
 .MenuAndLogoContainer {
@@ -36,7 +37,7 @@
 }
 
 @media (min-width: 401px) {
-    .Sidedrawer {
+    .Sidedrawer{
         display: none;
     }
 }

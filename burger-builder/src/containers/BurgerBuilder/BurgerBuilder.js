@@ -32,8 +32,8 @@ class BurgerBuilder extends Component {
         ingredients: {...INGREDIENTS},
         totalPrice: INGREDIENT_PRICES.base_price,
         isPurchasable: false,
-        showModal: false,
-        data: null
+        showModal: false
+        // data: null
     }
 
     ingredientHandler = (operation, ingredient) => {
@@ -97,19 +97,14 @@ class BurgerBuilder extends Component {
                 <StateManager.Provider
                     value = {
                         {
-                            ingredients: {
-                                ...this.state.ingredients
-                            },
-                            totalPrice: this.state.totalPrice,
-                            isPurchasable: this.state.isPurchasable,
+                            ...this.state,
                             ingredientHandler: this.ingredientHandler,
-                            showModal: this.state.showModal,
                             displayModalHandler: this.displayModalHandler,
                             orderHandler: this.orderHandler
                         }
                     }>
                         <Modal 
-                            visible = {this.state.showModal}
+                            showModal = {this.state.showModal}
                             displayModalHandler = {this.displayModalHandler}
                             >
                                 <OrderSummary 

@@ -7,14 +7,14 @@ const Modal = (props) => (
         <div 
             className = {CSSModule.Modal}
             style = {{
-                opacity: props.visible ? "100" : "0",
-                transform: props.visible ? "translate(-50%, 0vh)" : "translate(-50%, -100vh)"
+                opacity: props.showModal ? "100" : "0",
+                transform: props.showModal ? "translate(-50%, 0vh)" : "translate(-50%, -100vh)"
             }}>
                 {props.children}
         </div>
 
         <Backdrop 
-            showBackdrop = {props.visible}
+            showBackdrop = {props.showModal}
             onClick = {props.displayModalHandler}/>
     </Fragment>
 );

@@ -19,9 +19,16 @@
     height: 100%;
 }
 
+.Menu {
+    display: none;
+}
+
 @media (max-width: 400px) {
-    .NavigationItems,
-    .Menu {
+    .NavigationItems {
         display: none;
+    }
+
+    .Menu {
+        display: initial;
     }
 }
