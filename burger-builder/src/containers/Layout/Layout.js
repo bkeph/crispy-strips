@@ -18,10 +18,7 @@ class Layout extends Component {
     // })()
 
     displaySidedrawerHandler = () => {
-        const state = this.state.showSidedrawer;
-        state
-            ? this.setState({ showSidedrawer: false })
-            : this.setState({ showSidedrawer: true });
+        this.setState((prevState) => ({ showSidedrawer: !prevState.showSidedrawer }));
     }
     
     render() {

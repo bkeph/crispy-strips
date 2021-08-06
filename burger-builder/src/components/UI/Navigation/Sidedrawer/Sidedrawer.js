@@ -11,7 +11,9 @@ const Sidedrawer = () => {
     const context = useContext(SidedrawerStateManager);
     return (
         <Fragment>
-            <div className = {[CSSModules.Sidedrawer, context.showSidedrawer ? CSSModules.OpenSidedrawer : CSSModules.CloseSidedrawer].join(' ')}>
+            <div className = {[CSSModules.Sidedrawer, context.showSidedrawer 
+                ? CSSModules.OpenSidedrawer 
+                : CSSModules.CloseSidedrawer].join(' ')}>
     
                 <div className = {CSSModules.MenuAndLogoContainer}>
                     <Menu onClick = {context.displaySidedrawerHandler} />

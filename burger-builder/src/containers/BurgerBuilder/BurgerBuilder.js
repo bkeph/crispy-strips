@@ -81,10 +81,7 @@ class BurgerBuilder extends Component {
     }
 
     displayModalHandler = () => {
-        const state = this.state.showModal;
-        state
-            ? this.setState({ showModal: false })
-            : this.setState({ showModal: true });
+        this.setState((prevState) => ({ showModal: !prevState.showModal }));
     }
 
     orderHandler = () => {

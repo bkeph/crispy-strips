@@ -1,7 +1,7 @@
 import CSSModule from './OrderSummary.module.css';
 import Burger from '../Burger';
 import Button from '../../UI/Button/Button';
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import StateManager from '../../StateManager/StateManager';
 
 
@@ -35,6 +35,11 @@ const OrderSummary = (props) => {
         }
         return checkoutModalData;
     };
+
+    //Render OrderSummary only when modal is shown
+    useEffect(() => {
+        console.log("[OrderSummary.js] useEffect (componentDidUpdate)");
+    }, [context.showModal]);
 
     return(
         <div className = {CSSModule.OrderSummary}>
