@@ -5,7 +5,6 @@
     position: fixed;
     top: 0;
     left: 0;
-    z-index: 1;
     
     animation: blur-in 100ms /* duration */ 500ms /* delay */ forwards /* animation-fill-mode */;
   }

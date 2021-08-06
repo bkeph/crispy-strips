@@ -25,7 +25,8 @@ const Sidedrawer = () => {
     
             <Backdrop 
                 showBackdrop = {context.showSidedrawer}
-                onClick = {context.displaySidedrawerHandler}/>
+                onClick = {context.displaySidedrawerHandler}
+                zIndex = {3} />
         </Fragment>
     );
 };

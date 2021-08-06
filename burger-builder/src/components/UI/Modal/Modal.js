@@ -15,7 +15,8 @@ const Modal = (props) => (
 
         <Backdrop 
             showBackdrop = {props.showModal}
-            onClick = {props.displayModalHandler}/>
+            onClick = {props.displayModalHandler}
+            zIndex = {1}/>
     </Fragment>
 );
 
