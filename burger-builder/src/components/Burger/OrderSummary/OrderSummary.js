@@ -38,7 +38,7 @@ const OrderSummary = (props) => {
 
     //Render OrderSummary only when modal is shown
     useEffect(() => {
-        console.log("[OrderSummary.js] useEffect (componentDidUpdate)");
+        // console.log("[OrderSummary.js] useEffect (componentDidUpdate)");
     }, [context.showModal]);
 
     return(

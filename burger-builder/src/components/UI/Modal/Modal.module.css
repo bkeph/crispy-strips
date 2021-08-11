@@ -1,11 +1,9 @@
 .Modal {
     position: absolute;
-    /* display: inline-flex; */
     top: 10%;
     left: 50%;
-    /* width: 50%; */
     height: 70%;
     z-index: 2;
-    transform: translate(-50%);
+    /* transform: translate(-50%); */
     transition: opacity 500ms, transform 500ms;
 }

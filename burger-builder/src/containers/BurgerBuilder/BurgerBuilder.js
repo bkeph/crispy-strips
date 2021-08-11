@@ -4,6 +4,8 @@ import IngredientControls from '../../components/IngredientControls/IngredientCo
 import StateManager from '../../components/StateManager/StateManager';
 import Modal from "../../components/UI/Modal/Modal";
 import OrderSummary from "../../components/Burger/OrderSummary/OrderSummary";
+import axios from '../../axios';
+import LoadingSpinner from '../../components/UI/LoadingSpinner/LoadingSpinner'; // TO DELETE
 
 
 const INGREDIENT_PRICES = {
@@ -32,8 +34,8 @@ class BurgerBuilder extends Component {
         ingredients: {...INGREDIENTS},
         totalPrice: INGREDIENT_PRICES.base_price,
         isPurchasable: false,
-        showModal: false
-        // data: null
+        showModal: false,
+        loading: false,
     }
 
     ingredientHandler = (operation, ingredient) => {
@@ -85,10 +87,35 @@ class BurgerBuilder extends Component {
     }
 
     orderHandler = () => {
-        alert("Ordered successfully!");
+        this.setState({loading: true});
+
+        const orderData = {
+            ingredients: {...this.state.ingredients},
+            price: this.state.totalPrice,
+            customerData: {
+                name: "Dummy Name",
+                street: "Dummy Street 123"
+            }
+        };
+
+        axios.post('/orders.json', orderData)
+            .then((response) => {
+                console.log("response", response);
+                this.setState({showModal: false, loading: false});
+            })
+            .catch((error) => {
+                console.error("MY_ERROR", error);
+                this.setState({showModal: false, loading: false});
+            });
     }
     
     render() {
+        const orderSummary = this.state.loading
+            ? <LoadingSpinner />
+            : <OrderSummary 
+                ingredients = {this.state.ingredients}
+                price = {this.state.totalPrice}/>;
+
         return(
             <Fragment>
                 <StateManager.Provider
@@ -104,9 +131,7 @@ class BurgerBuilder extends Component {
                             showModal = {this.state.showModal}
                             displayModalHandler = {this.displayModalHandler}
                             >
-                                <OrderSummary 
-                                    ingredients = {this.state.ingredients}
-                                    price = {this.state.totalPrice}/>
+                                {orderSummary}   
                         </Modal>
 
                         <Burger 
