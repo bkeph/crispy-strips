@@ -3,14 +3,19 @@ import { css } from "@emotion/react";
 
 const styling = css`
     display: flex;
+    justify-content: center;
     top: 50%;
 `;
 
-const loadingSpinner = () => {
+const loadingSpinner = (props) => {
+    const color = props.color
+        ? props.color
+        : "#fff";
+
     return (
         <PropagateLoader 
             css = {styling}
-            color={"#fff"} 
+            color={color} 
             size={15} />
     );
 };

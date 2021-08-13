@@ -8,11 +8,9 @@
     z-index: 4;
     display: flex;
     flex-direction: column;
-    box-shadow: 0px 2px 6px -2px rgb(138, 138, 138);
     padding: 0px 20px;
     box-sizing: border-box;
     transition: transform 750ms;
-    backdrop-filter: blur(2px);
 }
 
 .MenuAndLogoContainer {

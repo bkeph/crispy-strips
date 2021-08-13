@@ -3,7 +3,6 @@
     background-color: rgb(254, 254, 254);
     display: flex;
     align-items: center;
-    /* border-bottom: 3px solid transparent; */
     box-sizing: border-box;
 }
 
@@ -20,13 +19,11 @@
 
 .NavigationItem a.active {
     border-bottom: 6px solid rgb(233, 158, 87);
-    /* box-sizing: border-box; */
     background-color: rgb(244, 244, 244);
 }
 
 .NavigationItem a:active {
     background-color: rgb(226, 226, 226);
-    /* border-bottom: 6px solid rgb(233, 158, 87); */
     transition: border-bottom 100ms, background-color 50ms;
 }
 

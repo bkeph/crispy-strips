@@ -7,15 +7,7 @@ import SidedrawerStateManager from '../../components/SidedrawerStateManager/Side
 class Layout extends Component {
     state = {
         showSidedrawer: false,
-        // mobileVersion: window.visualViewport.width < 400 // TO DELETE
-        //     ? true
-        //     : false
     }
-
-    // showScreenWidth = (() => { // TO DELETE
-    //     console.log("mobileVersion:",this.state.mobileVersion);
-    //     // console.log("Window.screen.width", window.visualViewport.width);
-    // })()
 
     displaySidedrawerHandler = () => {
         this.setState((prevState) => ({ showSidedrawer: !prevState.showSidedrawer }));

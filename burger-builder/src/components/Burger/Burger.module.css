@@ -6,14 +6,16 @@
     font-size: 1.2rem;
     height: 300px;
     padding: 20px 0px;
-    box-shadow: 0px 0px 10px -5px rgb(167, 167, 167);
+    box-shadow: 0px 0px 20px -5px rgb(197, 197, 197);
     margin: 0px 16px 30px 16px;
     border-radius: 6px;
     background-color: rgb(250, 250, 250);
     box-sizing: border-box;
     align-items: center;
+    border: 1px solid rgba(200, 200, 200, 0.4);
 
     display: flex;
+    align-self: center;
 }
 
 .Burger {
@@ -33,27 +35,3 @@
 .BurgerWrapperAlt {
     height: auto;
 }
-
-/* @media (min-width: 1000px) and (min-height: 800px)
-{
-    .BurgerWrapper {
-        width: 700px;
-        height: 600px;
-    }
-} */
-
-/* @media (min-width: 450px) and (min-height: 401px)
-{
-    .BurgerWrapper {
-        width: 450px;
-        height: 400px;
-    }
-} */
-
-/* @media (min-width: 350px) and (min-height: 400px)
-{
-    .BurgerWrapper {
-        width: 350px;
-        height: 300px;
-    }
-} */
