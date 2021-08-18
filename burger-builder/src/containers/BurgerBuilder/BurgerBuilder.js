@@ -8,6 +8,8 @@ import axiosInstance from '../../axios';
 import LoadingSpinner from '../../components/UI/LoadingSpinner/LoadingSpinner';
 import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
 import CSSModule from './BurgerBuilder.module.css';
+import { Route } from 'react-router-dom';
+import Checkout from '../Checkout/Checkout';
 
 
 // Component definition
@@ -155,6 +157,8 @@ class BurgerBuilder extends Component {
                         {this.state.error
                             ? errorMessage
                             : ingredientControls}
+
+                        <Route to='/checkout' component={Checkout} />
                 </StateManager.Provider>
 
             </Fragment>

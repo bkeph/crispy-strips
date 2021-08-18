@@ -3,11 +3,11 @@ import CSSModule from './NavigationItems.module.css';
 
 const navigationItems = () => (
     <ul className = {CSSModule.NavigationItems}>
-        <NavigationItem active link = {"/"}>
+        <NavigationItem /* active */ path = {"/"}>
             BurgerBuilder
         </NavigationItem>
 
-        <NavigationItem link = {"/"}>
+        <NavigationItem path = {"/checkout"}>
             Checkout
         </NavigationItem>
     </ul>

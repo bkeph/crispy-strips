@@ -1,11 +1,14 @@
 import Layout from "./containers/Layout/Layout";
 import BurgerBuilder from "./containers/BurgerBuilder/BurgerBuilder";
+import { BrowserRouter } from 'react-router-dom';
 
 function App() {
     return (
-        <Layout>
-            <BurgerBuilder />
-        </Layout>
+        <BrowserRouter>
+            <Layout>
+                <BurgerBuilder />
+            </Layout>
+        </BrowserRouter>
     );
 }
 
