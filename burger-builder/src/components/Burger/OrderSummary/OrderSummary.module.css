@@ -50,6 +50,8 @@
     display: flex;
     flex-direction: row;
     height: 30px;
+    width: 258px;
+    margin: 0 auto;
 }
 
 .priceData {

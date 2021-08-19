@@ -12,7 +12,7 @@ const CheckoutSummary = () => {
                 ingredients = {context.ingredients}
                 price = {context.totalPrice}
                 title = {"Checkout"}
-                closeBtnText = {"Go to main page"}
+                closeBtnText = {"Cancel"}
                 goBtnText = {"Order"}
                 closeBtnAction = {context.returnToMainPageHandler}
                 goBtnAction = {context.orderHandler}/>

@@ -1,13 +1,13 @@
 import NavigationItem from "./NavigationItem/NavigationItem";
 import CSSModule from './NavigationItems.module.css';
 
-const navigationItems = () => (
+const navigationItems = (props) => (
     <ul className = {CSSModule.NavigationItems}>
-        <NavigationItem /* active */ path = {"/"}>
+        <NavigationItem onClick = {props.onClick} path = {"/"}>
             BurgerBuilder
         </NavigationItem>
 
-        <NavigationItem path = {"/checkout"}>
+        <NavigationItem onClick = {props.onClick} path = {"/checkout"}>
             Checkout
         </NavigationItem>
     </ul>
