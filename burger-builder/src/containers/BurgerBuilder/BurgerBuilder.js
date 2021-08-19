@@ -8,7 +8,7 @@ import axiosInstance from '../../axios';
 import LoadingSpinner from '../../components/UI/LoadingSpinner/LoadingSpinner';
 import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
 import CSSModule from './BurgerBuilder.module.css';
-import { Route } from 'react-router-dom';
+import { Route, Switch, withRouter } from 'react-router-dom';
 import Checkout from '../Checkout/Checkout';
 
 
@@ -22,6 +22,7 @@ class BurgerBuilder extends Component {
         showModal: false,
         loading: false,
         error: false,
+        isCheckoutEnabled: false
     }
 
     componentDidMount() {
@@ -117,13 +118,28 @@ class BurgerBuilder extends Component {
                 this.setState({showModal: false, loading: false});
             });
     }
+
+    toCheckoutHandler = () => {
+        this.props.history.push({ pathname: "/checkout" });
+        // console.log(this.props);
+    }
+
+    returnToMainPageHandler = () => {
+        this.setState({showModal: false});
+        this.props.history.push({ pathname: "/" });
+    }
     
     render() {
         const orderSummary = this.state.loading
             ? <LoadingSpinner />
             : <OrderSummary 
                 ingredients = {this.state.ingredients}
-                price = {this.state.totalPrice}/>;
+                price = {this.state.totalPrice}
+                title = {"Order Summary"}
+                closeBtnText = {"Close"}
+                goBtnText = {"Checkout"}
+                closeBtnAction = {this.displayModalHandler}
+                goBtnAction = {this.toCheckoutHandler}/>;
 
         const ingredientControls = this.state.ingredients
             ? <IngredientControls />
@@ -142,23 +158,31 @@ class BurgerBuilder extends Component {
                             ...this.state,
                             ingredientHandler: this.ingredientHandler,
                             displayModalHandler: this.displayModalHandler,
-                            orderHandler: this.orderHandler
+                            orderHandler: this.orderHandler,
+                            toCheckoutHandler: this.toCheckoutHandler,
+                            returnToMainPageHandler: this.returnToMainPageHandler
                         }
                     }>
-                        <Modal 
-                            showModal = {this.state.showModal}
-                            displayModalHandler = {this.displayModalHandler}
-                            >
-                                {orderSummary}   
-                        </Modal>
+                        <Switch>
+                            <Route path='/checkout' exact component={Checkout} />
 
-                        <Burger ingredients = {this.state.ingredients}/>
+                            <Route path='/' exact>
+                                <Modal 
+                                    showModal = {this.state.showModal}
+                                    displayModalHandler = {this.displayModalHandler}
+                                    >
+                                        {orderSummary}   
+                                </Modal>
 
-                        {this.state.error
-                            ? errorMessage
-                            : ingredientControls}
+                                <Burger ingredients = {this.state.ingredients}/>
 
-                        <Route to='/checkout' component={Checkout} />
+                                {this.state.error
+                                    ? errorMessage
+                                    : ingredientControls}
+                            </Route>
+
+                            <Route render={() => <div>Page not found.</div>} />
+                        </Switch>
                 </StateManager.Provider>
 
             </Fragment>
@@ -166,4 +190,4 @@ class BurgerBuilder extends Component {
     };
 };
 
-export default withErrorHandler(BurgerBuilder, axiosInstance);
+export default withErrorHandler(withRouter(BurgerBuilder), axiosInstance);

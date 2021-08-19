@@ -46,7 +46,7 @@ const OrderSummary = (props) => {
 
             {/* Modal title */}
             <div className = {CSSModule.Title}>
-                Order Summary
+                {props.title}
             </div>
 
             <div className = {CSSModule.Wrapper}>
@@ -76,15 +76,15 @@ const OrderSummary = (props) => {
                 {/* Close button */}
                 <Button
                     style = {buttonAdjacentStyling}
-                    onClick = {context.displayModalHandler}>
-                    Close
+                    onClick = {props.closeBtnAction}>
+                    {props.closeBtnText}
                 </Button>
 
                 {/* Order button */}
                 <Button
                     style = {{...buttonAdjacentStyling, backgroundImage: "linear-gradient(rgba(186, 255, 130, 0.5), rgba(30, 255, 0, 0.25))"}}
-                    onClick = {context.orderHandler}>
-                    Order
+                    onClick = {props.goBtnAction}>
+                    {props.goBtnText}
                 </Button>
             </div>
 

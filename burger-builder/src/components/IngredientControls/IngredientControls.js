@@ -40,7 +40,7 @@ const IngredientControls = () => {
                 disabled = {disabled}
                 style = {adjacentStyling}
                 onClick = {context.displayModalHandler}>
-                    Checkout
+                    Order
             </Button>
 
         </div>
