@@ -1,23 +1,18 @@
 import CSSModule from './CheckoutSummary.module.css';
-import StateManager from '../../StateManager/StateManager';
-import { useContext } from 'react';
 import OrderSummary from '../../Burger/OrderSummary/OrderSummary';
 
-const CheckoutSummary = () => {
-    const context = useContext(StateManager);
+const CheckoutSummary = (props) => (
+    <div className = {CSSModule.Wrapper}>
+        <OrderSummary 
+            ingredients = {props.ingredients}
+            price = {props.totalPrice}
+            title = {"Checkout"}
+            closeBtnText = {"Cancel"}
+            goBtnText = {"Order"}
+            closeBtnAction = {props.returnToMainPageHandler}
+            goBtnAction = {props.orderHandler}/>
+    </div>
+);
 
-    return(
-        <div className = {CSSModule.Wrapper}>
-            <OrderSummary 
-                ingredients = {context.ingredients}
-                price = {context.totalPrice}
-                title = {"Checkout"}
-                closeBtnText = {"Cancel"}
-                goBtnText = {"Order"}
-                closeBtnAction = {context.returnToMainPageHandler}
-                goBtnAction = {context.orderHandler}/>
-        </div>
-    );
-}
 
 export default CheckoutSummary;

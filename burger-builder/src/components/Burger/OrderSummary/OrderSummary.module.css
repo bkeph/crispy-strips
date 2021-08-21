@@ -51,7 +51,7 @@
     flex-direction: row;
     height: 30px;
     width: 258px;
-    margin: 0 auto;
+    align-self: center;
 }
 
 .priceData {
@@ -71,6 +71,6 @@
     flex-grow: 1;
 }
 
-@media (min-width: 750px) {
-
+@media (max-width: 400px) {
+    
 }

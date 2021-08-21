@@ -9,7 +9,6 @@ import LoadingSpinner from '../../components/UI/LoadingSpinner/LoadingSpinner';
 import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
 import CSSModule from './BurgerBuilder.module.css';
 import { Route, Switch, withRouter } from 'react-router-dom';
-import Checkout from '../Checkout/Checkout';
 
 
 // Component definition
@@ -97,36 +96,38 @@ class BurgerBuilder extends Component {
     }
 
     orderHandler = () => {
-        this.setState({ loading: true });
+        // this.setState({ loading: true });
 
-        const orderData = {
-            ingredients: {...this.state.ingredients},
-            price: this.state.totalPrice,
-            customerData: {
-                name: "Dummy Name",
-                street: "Dummy Street 123"
-            }
-        };
+        // const orderData = {
+        //     ingredients: {...this.state.ingredients},
+        //     price: this.state.totalPrice,
+        //     customerData: {
+        //         name: "Dummy Name",
+        //         street: "Dummy Street 123"
+        //     }
+        // };
 
-        axiosInstance.post('/orders.json', orderData)
-            .then((response) => {
-                console.log("[BurgerBuilder.js] RESPONSE", response);
-                this.setState({showModal: false, loading: false});
-            })
-            .catch((error) => {
-                console.error("[BurgerBuilder.js] ERROR", error);
-                this.setState({showModal: false, loading: false});
-            });
+        // axiosInstance.post('/orders.json', orderData)
+        //     .then((response) => {
+        //         console.log("[BurgerBuilder.js] RESPONSE", response);
+        //         this.setState({showModal: false, loading: false});
+        //     })
+        //     .catch((error) => {
+        //         console.error("[BurgerBuilder.js] ERROR", error);
+        //         this.setState({showModal: false, loading: false});
+        //     });
     }
 
     toCheckoutHandler = () => {
         const searchParams = [];
-        const ingredientsFromState = {...this.state.ingredients};
+        const ingredients = {...this.state.ingredients};
+        const price = this.state.totalPrice;
 
-        for (const key in ingredientsFromState) {
-            if (Object.hasOwnProperty.call(ingredientsFromState, key)) {
-                const element = ingredientsFromState[key];
-                searchParams.push(`${encodeURIComponent(key)}=${encodeURIComponent(ingredientsFromState[key])}`);
+        searchParams.push(`price=${encodeURIComponent(price)}`);
+
+        for (const key in ingredients) {
+            if (Object.hasOwnProperty.call(ingredients, key)) {
+                searchParams.push(`${encodeURIComponent(key)}=${encodeURIComponent(ingredients[key])}`);
             }
         }
         const searchParamsString = searchParams.join("&");
@@ -161,7 +162,6 @@ class BurgerBuilder extends Component {
                 An error occured while fetching data from the server. Please try again later.
             </p>;
 
-
         return(
             <Fragment>
                 <StateManager.Provider
@@ -176,8 +176,6 @@ class BurgerBuilder extends Component {
                         }
                     }>
                         <Switch>
-                            <Route path='/checkout' exact component={Checkout} />
-
                             <Route path='/' exact>
                                 <Modal 
                                     showModal = {this.state.showModal}
