@@ -120,8 +120,20 @@ class BurgerBuilder extends Component {
     }
 
     toCheckoutHandler = () => {
-        this.props.history.push({ pathname: "/checkout" });
-        // console.log(this.props);
+        const searchParams = [];
+        const ingredientsFromState = {...this.state.ingredients};
+
+        for (const key in ingredientsFromState) {
+            if (Object.hasOwnProperty.call(ingredientsFromState, key)) {
+                const element = ingredientsFromState[key];
+                searchParams.push(`${encodeURIComponent(key)}=${encodeURIComponent(ingredientsFromState[key])}`);
+            }
+        }
+        const searchParamsString = searchParams.join("&");
+        this.props.history.push({ 
+            pathname: "/checkout",
+            search: `?${searchParamsString}`
+         });
     }
 
     returnToMainPageHandler = () => {
