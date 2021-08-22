@@ -1,8 +1,7 @@
 import CSSModule from './OrderSummary.module.css';
 import Burger from '../Burger';
 import Button from '../../UI/Button/Button';
-import { useContext, useEffect } from "react";
-import StateManager from '../../StateManager/StateManager';
+import { useEffect } from "react";
 
 
 const buttonAdjacentStyling = {
@@ -12,34 +11,33 @@ const buttonAdjacentStyling = {
 }
 
 const OrderSummary = (props) => {
-
-    const context = useContext(StateManager);
-
     const listIngredients = () => {
-        let checkoutModalData = [];
+        let ingredientsSelected = [];
 
         for (const key in props.ingredients) {
-            if (Object.hasOwnProperty.call(props.ingredients, key) && props.ingredients[key] !== 0) {
-                checkoutModalData.push (
-                    <div className = {CSSModule.ingredientGroup} key = {`${key}${props.ingredients[key]}`}>
-                        <div className = {CSSModule.ingredientName} style = {{textTransform: 'capitalize'}}>
-                            {key}
-                        </div>
+            if (Object.hasOwnProperty.call(props.ingredients, key)) {
+                if(props.ingredients[key] !== 0) {
+                    ingredientsSelected.push (
+                        <div className = {CSSModule.ingredientGroup} key = {`${key}${props.ingredients[key]}`}>
+                            <div className = {CSSModule.ingredientName} style = {{textTransform: 'capitalize'}}>
+                                {key}
+                            </div>
 
-                        <div className = {CSSModule.ingredientQuantity}> 
-                            {props.ingredients[key]}
+                            <div className = {CSSModule.ingredientQuantity}> 
+                                {props.ingredients[key]}
+                            </div>
                         </div>
-                    </div>
-                );
+                    );
+                }
             }
         }
-        return checkoutModalData;
+        return ingredientsSelected;
     };
 
     //Render OrderSummary only when modal is shown
     useEffect(() => {
-        // console.log("[OrderSummary.js] useEffect (componentDidUpdate)");
-    }, [context.showModal]);
+        // console.log("[OrderSummary.js] useEffect");
+    }, [props.showModal]);
 
     return(
         <div className = {CSSModule.OrderSummary}>
@@ -66,7 +64,7 @@ const OrderSummary = (props) => {
                     </div>
 
                     <div>
-                        {context.totalPrice} $
+                        {props.totalPrice} $
                     </div>
                 </div>
             </div>

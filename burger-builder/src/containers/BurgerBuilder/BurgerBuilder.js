@@ -95,29 +95,6 @@ class BurgerBuilder extends Component {
         this.setState((prevState) => ({ showModal: !prevState.showModal }));
     }
 
-    orderHandler = () => {
-        // this.setState({ loading: true });
-
-        // const orderData = {
-        //     ingredients: {...this.state.ingredients},
-        //     price: this.state.totalPrice,
-        //     customerData: {
-        //         name: "Dummy Name",
-        //         street: "Dummy Street 123"
-        //     }
-        // };
-
-        // axiosInstance.post('/orders.json', orderData)
-        //     .then((response) => {
-        //         console.log("[BurgerBuilder.js] RESPONSE", response);
-        //         this.setState({showModal: false, loading: false});
-        //     })
-        //     .catch((error) => {
-        //         console.error("[BurgerBuilder.js] ERROR", error);
-        //         this.setState({showModal: false, loading: false});
-        //     });
-    }
-
     toCheckoutHandler = () => {
         const searchParams = [];
         const ingredients = {...this.state.ingredients};
@@ -136,23 +113,19 @@ class BurgerBuilder extends Component {
             search: `?${searchParamsString}`
          });
     }
-
-    returnToMainPageHandler = () => {
-        this.setState({showModal: false});
-        this.props.history.push({ pathname: "/" });
-    }
     
     render() {
         const orderSummary = this.state.loading
             ? <LoadingSpinner />
             : <OrderSummary 
                 ingredients = {this.state.ingredients}
-                price = {this.state.totalPrice}
+                totalPrice = {this.state.totalPrice}
                 title = {"Order Summary"}
                 closeBtnText = {"Close"}
                 goBtnText = {"Checkout"}
                 closeBtnAction = {this.displayModalHandler}
-                goBtnAction = {this.toCheckoutHandler}/>;
+                goBtnAction = {this.toCheckoutHandler}
+                showModal = {this.state.showModal}/>;
 
         const ingredientControls = this.state.ingredients
             ? <IngredientControls />
