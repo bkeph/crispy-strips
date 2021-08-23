@@ -15,8 +15,7 @@ class Checkout extends Component {
         toRender: null
     }
 
-    returnToMainPageHandler = () => {
-        console.log("gotHere");
+    returnToMainPage = () => {
         this.props.history.push({ pathname: "/" });
     }
 
@@ -35,11 +34,11 @@ class Checkout extends Component {
         axiosInstance.post('/orders.json', orderData)
             .then((response) => {
                 console.log("[BurgerBuilder.js] RESPONSE", response);
-                this.setState({showModal: false, loading: false});
+                this.setState({loading: false});
             })
             .catch((error) => {
                 console.error("[BurgerBuilder.js] ERROR", error);
-                this.setState({showModal: false, loading: false});
+                this.setState({loading: false});
             });
     }
 
@@ -57,7 +56,7 @@ class Checkout extends Component {
                     toRender: <CheckoutSummary 
                         ingredients={this.state.ingredients} 
                         totalPrice={this.state.totalPrice}
-                        closeBtnAction = {this.returnToMainPageHandler}
+                        closeBtnAction = {this.returnToMainPage}
                         goBtnAction = {this.orderHandler}/>
                 });
             else {
@@ -79,10 +78,10 @@ class Checkout extends Component {
 
             for (const iterator of dataFromURL.entries()) {
                 if(iterator[0] === "price") {
-                    var totalPrice = iterator[1];
+                    var totalPrice = +iterator[1];
                     continue;
                 }
-                ingredients[iterator[0]] = iterator[1];
+                ingredients[iterator[0]] = +iterator[1];
             }
             this.setState({ingredients, totalPrice, loading: true, wasDataPassed: true});
         } else {

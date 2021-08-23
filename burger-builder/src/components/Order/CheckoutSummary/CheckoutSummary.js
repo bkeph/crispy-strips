@@ -2,7 +2,6 @@ import CSSModule from './CheckoutSummary.module.css';
 import OrderSummary from '../../Burger/OrderSummary/OrderSummary';
 
 const CheckoutSummary = (props) => {
-    console.log(props);
     return (
         <div className = {CSSModule.Wrapper}>
             <OrderSummary 
@@ -11,8 +10,8 @@ const CheckoutSummary = (props) => {
                 title = {"Checkout"}
                 closeBtnText = {"Cancel"}
                 goBtnText = {"Order"}
-                closeBtnAction = {props.returnToMainPageHandler}
-                goBtnAction = {props.orderHandler}/>
+                closeBtnAction = {props.closeBtnAction}
+                goBtnAction = {props.goBtnAction}/>
         </div>
     )
 };
