@@ -28,11 +28,11 @@ class ContactData extends Component {
         this.setState({loading: true, wasSubmitted: true});
 
         // const date = new Date();
-        const shortDate = `${moment().format('L')} ${moment().format('LT')}`;
+        const shortDate = `${moment().format('L')}\n${moment().format('LT')}`;
 
         const orderData = {
             ingredients: {...this.state.ingredients},
-            price: this.state.totalPrice,
+            price: this.state.price,
             customerData: {
                 // name: this.state.name,
                 // email: this.state.email,

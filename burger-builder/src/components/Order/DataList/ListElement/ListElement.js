@@ -4,11 +4,13 @@ const ListElement = (props) => {
 
     let customerData = [];
     let ingredients = [];
+    let price = [];
 
     const createElement = () => {
         for (const dataType in props.data) {
             if (Object.hasOwnProperty.call(props.data, dataType)) {
                 const element = props.data[dataType];
+
                 if(dataType === "customerData") {
                     for (const customerDataElement in element) {
                         if (Object.hasOwnProperty.call(element, customerDataElement)) {
@@ -25,24 +27,18 @@ const ListElement = (props) => {
                         }
                     }
                 }
+                else if(dataType === "price") {
+                    price.push([dataType, `${element}$`]);
+                }
             }
         }
 
-        const customerDataToRender = customerData.map(item => (
+        const toRender = [...customerData, ...ingredients, ...price].map(item => (
             <div className = {CSSModule.ListElement} key = {`${item[0]}_${item[1]}`}>
-                <div>{item[0]}</div>
-                <div>{item[1]}</div>
+                <div className = {CSSModule.Property}>{item[0]}</div>
+                <div className = {CSSModule.Value}>{item[1]}</div>
             </div>
         ));
-
-        const ingredientsToRender = ingredients.map(item => (
-            <div className = {CSSModule.ListElement} key = {`${item[0]}_${item[1]}`}>
-                <div>{item[0]}</div>
-                <div>{item[1]}</div>
-            </div>
-        ));
-
-        const toRender = ([customerDataToRender, ingredientsToRender]);
 
         return(
             <div className = {CSSModule.ListElementWrapper}>

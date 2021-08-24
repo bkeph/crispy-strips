@@ -5,25 +5,39 @@ import CSSModule from './withErrorHandler.module.css';
 // HOC that wrap any component that uses Axios and handle its errors
 const withErrorHandler = (WrappedComponent, axiosInstance) => {
     return class extends Component {
-        constructor(props) {
-            super(props);
+        state = {
+            error: null
+        }
+        
+        // constructor(props) {
+        //     super(props);
+        //     this.state = { error: null };
+        //     this.catchError("constructor");
+        // }
 
+        componentDidMount() {
+            this.catchError();
+        }
+
+        componentDidUpdate() {
+            this.catchError();
+        }
+
+        catchError() {
             // Reset any previous errors
             axiosInstance.interceptors.request.use((request) => {
                 if(this.state.error) {
                     this.setState({ error: null });
                 }
                 return request;
+            }, (error) => {
+                this.setState({ error: error });
             });
 
             // Check for errors at response receipt
             axiosInstance.interceptors.response.use(response => response, (error) => {
                 this.setState({ error: error });
-            })
-        }
-
-        state = {
-            error: null
+            });
         }
 
         displayError = () => {
@@ -35,7 +49,7 @@ const withErrorHandler = (WrappedComponent, axiosInstance) => {
             const error = this.state.error
                 ? (
                     <Modal 
-                        showModal = {this.state.error}
+                        showModal = {!!this.state.error}
                         displayModalHandler = {this.displayError}>
                             <div className = {CSSModule.ErrorMessage}>
                                 {`ERROR: ${this.state.error.message}`}

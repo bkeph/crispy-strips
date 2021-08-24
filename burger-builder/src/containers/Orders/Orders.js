@@ -7,6 +7,7 @@ import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
 const Orders = () => {
     const [loadingState, loadingStateHandler] = useState(null);
     const [ordersDataState, ordersDataHandler] = useState(null);
+    const [errorState, errorHandler] = useState(null);
 
     useEffect(() => {
         if(loadingState === null && ordersDataState === null) {
@@ -14,11 +15,18 @@ const Orders = () => {
         
             axiosInstance.get('/orders.json')
                 .then(res => {
-                    // console.log(res);
                     loadingStateHandler(false);
-                    res.data
-                        ? ordersDataHandler(res.data)
-                        : ordersDataHandler("no data");
+
+                    if(res) {
+                        if(res.data)
+                            ordersDataHandler(res.data);
+                        else
+                            ordersDataHandler("no data");
+                    }
+                })
+                .catch(err => {
+                    loadingStateHandler(false);
+                    errorHandler(true);
                 });
             }
     }, [loadingState, ordersDataState]);
