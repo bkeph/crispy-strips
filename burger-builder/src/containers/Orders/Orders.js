@@ -2,44 +2,34 @@ import axiosInstance from '../../axios';
 import { useEffect, useState } from 'react';
 import LoadingSpinner from '../../components/UI/LoadingSpinner/LoadingSpinner';
 import DataList from '../../components/Order/DataList/DataList';
+import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
 
-const Orders = (props) => {
+const Orders = () => {
     const [loadingState, loadingStateHandler] = useState(null);
-    const [wasDataFetchedState, wasDataFetchedHandler] = useState(null);
-    const [errorState, errorStateHandler] = useState(null);
     const [ordersDataState, ordersDataHandler] = useState(null);
 
     useEffect(() => {
-        if(loadingState === null && wasDataFetchedState === null) {
+        if(loadingState === null && ordersDataState === null) {
             loadingStateHandler(true);
-            wasDataFetchedHandler(false);
         
             axiosInstance.get('/orders.json')
                 .then(res => {
-                    console.log(res);
+                    // console.log(res);
                     loadingStateHandler(false);
-                    wasDataFetchedHandler(true);
                     res.data
                         ? ordersDataHandler(res.data)
                         : ordersDataHandler("no data");
-                })
-                .catch(err => {
-                    loadingStateHandler(false);
-                    wasDataFetchedHandler(false);
-                    errorStateHandler(<div>Please try again. Following error was encountered: {err}</div>);
                 });
             }
-    }, [loadingState, wasDataFetchedState, errorState]);
+    }, [loadingState, ordersDataState]);
 
     const toRender = loadingState
         ? <LoadingSpinner />
-        : wasDataFetchedState
-            ? <DataList orders = {ordersDataState}/>
-            : errorState;
+        : <DataList orders = {ordersDataState}/>;
 
     return(
         toRender
     );
 }
 
-export default Orders;
+export default withErrorHandler(Orders, axiosInstance);
