@@ -116,7 +116,7 @@ class BurgerBuilder extends Component {
     
     render() {
         const orderSummary = this.state.loading
-            ? <LoadingSpinner />
+            ? <LoadingSpinner color = {"#fff"}/>
             : <OrderSummary 
                 ingredients = {this.state.ingredients}
                 totalPrice = {this.state.totalPrice}
@@ -129,7 +129,7 @@ class BurgerBuilder extends Component {
 
         const ingredientControls = this.state.ingredients
             ? <IngredientControls />
-            : <LoadingSpinner color = {"rgb(48, 48, 48)"}/>;
+            : <LoadingSpinner />;
 
         const errorMessage = <p className = {CSSModule.ErrorMessage}>
                 An error occured while fetching data from the server. Please try again later.

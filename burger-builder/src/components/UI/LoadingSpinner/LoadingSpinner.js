@@ -10,7 +10,7 @@ const styling = css`
 const loadingSpinner = (props) => {
     const color = props.color
         ? props.color
-        : "#fff";
+        : "rgb(48, 48, 48)";
 
     return (
         <PropagateLoader 

@@ -2,8 +2,8 @@ import CheckoutSummary from '../../components/Order/CheckoutSummary/CheckoutSumm
 import CSSModule from './Checkout.module.css';
 import { Component, Fragment } from 'react';
 import LoadingSpinner from '../../components/UI/LoadingSpinner/LoadingSpinner';
-import { withRouter } from 'react-router';
-import axiosInstance from '../../axios';
+import { withRouter, Route } from 'react-router';
+import ContactData from '../Checkout/ContactData/ContactData';
 
 
 class Checkout extends Component {
@@ -19,27 +19,8 @@ class Checkout extends Component {
         this.props.history.push({ pathname: "/" });
     }
 
-    orderHandler = () => {
-        this.setState({ loading: true });
-
-        const orderData = {
-            ingredients: {...this.state.ingredients},
-            price: this.state.totalPrice,
-            customerData: {
-                name: "Dummy Name",
-                street: "Dummy Street 123"
-            }
-        };
-
-        axiosInstance.post('/orders.json', orderData)
-            .then((response) => {
-                console.log("[BurgerBuilder.js] RESPONSE", response);
-                this.setState({loading: false});
-            })
-            .catch((error) => {
-                console.error("[BurgerBuilder.js] ERROR", error);
-                this.setState({loading: false});
-            });
+    toContactForm = () => {
+        this.props.history.replace(`${this.props.match.path}/contact-data`);
     }
 
     componentDidMount() {
@@ -57,14 +38,14 @@ class Checkout extends Component {
                         ingredients={this.state.ingredients} 
                         totalPrice={this.state.totalPrice}
                         closeBtnAction = {this.returnToMainPage}
-                        goBtnAction = {this.orderHandler}/>
+                        goBtnAction = {this.toContactForm}/>
                 });
             else {
                 this.goBack(2.5 * 1000);
                 this.setState({ 
                     toRender: <Fragment>
                             <div className = {CSSModule.GoBack}>No ingredients added. You are being redirected, please wait...</div>
-                            <LoadingSpinner color = {"rgb(48, 48, 48)"}/>
+                            <LoadingSpinner />
                         </Fragment>
                  });
             }
@@ -94,44 +75,23 @@ class Checkout extends Component {
             this.props.history.push("/");
         }, time);
     }
-
-
-    // returnToMainPageHandler = () => {
-    //     // this.setState({showModal: false});
-    //     console.log("gotHere");
-    //     this.props.history.push({ pathname: "/" });
-    // }
-
-    // orderHandler = () => {
-    //     this.setState({ loading: true });
-
-    //     const orderData = {
-    //         ingredients: {...this.state.ingredients},
-    //         price: this.state.totalPrice,
-    //         customerData: {
-    //             name: "Dummy Name",
-    //             street: "Dummy Street 123"
-    //         }
-    //     };
-
-    //     axiosInstance.post('/orders.json', orderData)
-    //         .then((response) => {
-    //             console.log("[BurgerBuilder.js] RESPONSE", response);
-    //             this.setState({showModal: false, loading: false});
-    //         })
-    //         .catch((error) => {
-    //             console.error("[BurgerBuilder.js] ERROR", error);
-    //             this.setState({showModal: false, loading: false});
-    //         });
-    // }
     
     render() {
 
         const toRender = this.state.loading
-            ? <LoadingSpinner color = {"rgb(48, 48, 48)"}/>
+            ? <LoadingSpinner />
             : this.state.toRender;
 
-        return toRender;
+        return (
+            <Fragment>
+                {toRender}
+                <Route path={`${this.props.match.path}/contact-data`}>
+                    <ContactData 
+                        ingredients = {this.state.ingredients}
+                        price = {this.state.totalPrice}/>
+                </Route>
+            </Fragment>
+        );
     }
 }
 
