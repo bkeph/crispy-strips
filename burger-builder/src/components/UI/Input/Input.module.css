@@ -1,0 +1,26 @@
+.Input {
+    margin: 16px 0;
+    box-sizing: border-box;
+}
+
+.Input > input {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-shadow: 0 2px 6px -2px #ccc;
+    box-sizing: border-box;
+    width: 100%;
+}
+
+.Input > label {
+    display: inline-block;
+    margin-bottom: 6px;
+    font-weight: 700;
+    font-size: 0.9rem;
+}
+
+.Input > input:focus,
+.Input > input:hover {
+    background-color: #eee;
+    outline: none;
+}

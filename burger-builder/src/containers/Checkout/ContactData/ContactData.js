@@ -4,6 +4,7 @@ import CSSModule from './ContactData.module.css';
 import axiosInstance from '../../../axios';
 import LoadingSpinner from "../../../components/UI/LoadingSpinner/LoadingSpinner";
 import moment from 'moment';
+import Input from '../../../components/UI/Input/Input';
 
 class ContactData extends Component {
     state = {
@@ -70,11 +71,11 @@ class ContactData extends Component {
             <div className = {CSSModule.ContactData}>
                 <h4>Enter your contact data:</h4>
                 <form>
-                    <input name="name" type="text" placeholder="Your name" />
-                    <input name="email" type="email" placeholder="Your email" />
-                    <input name="street" type="text" placeholder="Your street" />
-                    <input name="city" type="text" placeholder="Your city" />
-                    <input name="postalcode" type="text" placeholder="Your postalcode" />
+                    <Input name="name" type="text" placeholder="Your name" label="Name" />
+                    <Input name="email" type="email" placeholder="Your email" label="Email" />
+                    <Input name="street" type="text" placeholder="Your street" label="Street" />
+                    <Input name="city" type="text" placeholder="Your city" label="City" />
+                    <Input name="postalcode" type="text" placeholder="Your postalcode" label="Postal Code" />
 
                     <Button
                         style = {{ backgroundImage: "linear-gradient(rgba(186, 255, 130, 0.5), rgba(30, 255, 0, 0.25))" }}
