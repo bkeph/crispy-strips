@@ -8,13 +8,75 @@ import Input from '../../../components/UI/Input/Input';
 
 class ContactData extends Component {
     state = {
+        orderForm: {
+            name: {
+                elementType: 'input',
+                elementConfig: {
+                    type: 'text',
+                    placeholder: 'Your name',
+                    label: 'Name'
+                },
+                value: '',
+                validation: {
+                    required: true
+                },
+                valid: false
+            },
+            street: {
+                elementType: 'input',
+                elementConfig: {
+                    type: 'text',
+                    placeholder: 'Your street',
+                    label: 'Street'
+                },
+                value: '',
+                validation: {
+                    required: true
+                },
+                valid: false
+            },
+            postalcode: {
+                elementType: 'input',
+                elementConfig: {
+                    type: 'text',
+                    placeholder: 'Your postal code',
+                    label: 'Postal code'
+                },
+                value: '',
+                validation: {
+                    required: true
+                },
+                valid: false
+            },
+            city: {
+                elementType: 'input',
+                elementConfig: {
+                    type: 'text',
+                    placeholder: 'Your city',
+                    label: 'City'
+                },
+                value: '',
+                validation: {
+                    required: true
+                },
+                valid: false
+            },
+            email: {
+                elementType: 'input',
+                elementConfig: {
+                    type: 'email',
+                    placeholder: 'Your email',
+                    label: 'Email'
+                },
+                value: '',
+                validation: {
+                    required: true
+                },
+                valid: false
+            },
+        },
         ingredients: null,
-        price: null,
-        name: null,
-        email: null,
-        street: null,
-        city: null,
-        postalcode: null,
+        price: null,    
         loading: null,
         wasSubmitted: null
     }
@@ -26,25 +88,37 @@ class ContactData extends Component {
 
     orderHandler = (event) => {
         event.preventDefault();
-        this.setState({loading: true, wasSubmitted: true});
+        this.setState({
+            loading: true, 
+            wasSubmitted: true,
+        });
 
-        // const date = new Date();
+        const updatedOrderForm = JSON.parse(JSON.stringify(this.state.orderForm));
+
+        let counterOfInputElements = 0;
+        for (const inputElement in updatedOrderForm) {
+            if (Object.hasOwnProperty.call(updatedOrderForm, inputElement)) {
+                const element = updatedOrderForm[inputElement];
+                element.value = event.target[counterOfInputElements].value;
+                counterOfInputElements++;
+                console.log("element", element);
+            }
+        }
+        this.setState({
+            orderForm: updatedOrderForm
+        });
+
         const shortDate = `${moment().format('L')}\n${moment().format('LT')}`;
 
         const orderData = {
             ingredients: {...this.state.ingredients},
             price: this.state.price,
             customerData: {
-                // name: this.state.name,
-                // email: this.state.email,
-                // street: this.state.street,
-                // city: this.state.city,
-                // postalcode: this.state.postalcode,
-                name: "Dummy",
-                email: "Dummy",
-                street: "Dummy",
-                city: "Dummy",
-                postalcode: "Dummy",
+                name: event.target[0].value,
+                email: event.target[1].value,
+                street: event.target[2].value,
+                city: event.target[3].value,
+                postalcode: event.target[4].value,
                 date: shortDate
             }
         };
@@ -67,19 +141,24 @@ class ContactData extends Component {
                 : "Order sent!"
             : null;
 
+        const inputElements = [];
+        for (const key in this.state.orderForm) {
+            if (Object.hasOwnProperty.call(this.state.orderForm, key)) {
+                const element = this.state.orderForm[key];
+                inputElements.push(
+                    <Input key={key} name={key} {...element.elementConfig} />
+                );
+            }
+        }
+
         return(
             <div className = {CSSModule.ContactData}>
                 <h4>Enter your contact data:</h4>
-                <form>
-                    <Input name="name" type="text" placeholder="Your name" label="Name" />
-                    <Input name="email" type="email" placeholder="Your email" label="Email" />
-                    <Input name="street" type="text" placeholder="Your street" label="Street" />
-                    <Input name="city" type="text" placeholder="Your city" label="City" />
-                    <Input name="postalcode" type="text" placeholder="Your postalcode" label="Postal Code" />
+                <form onSubmit = {this.orderHandler}>
+                    {inputElements}
 
                     <Button
-                        style = {{ backgroundImage: "linear-gradient(rgba(186, 255, 130, 0.5), rgba(30, 255, 0, 0.25))" }}
-                        onClick = {this.orderHandler}>
+                        style = {{ backgroundImage: "linear-gradient(rgba(186, 255, 130, 0.5), rgba(30, 255, 0, 0.25))" }}>
                             Send
                     </Button>
                 </form>
