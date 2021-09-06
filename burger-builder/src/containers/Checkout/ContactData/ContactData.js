@@ -18,7 +18,8 @@ class ContactData extends Component {
                 },
                 value: '',
                 validation: {
-                    required: true
+                    required: true,
+                    minLength: 5
                 },
                 valid: false
             },
@@ -31,7 +32,8 @@ class ContactData extends Component {
                 },
                 value: '',
                 validation: {
-                    required: true
+                    required: true,
+                    minLength: 5
                 },
                 valid: false
             },
@@ -44,7 +46,8 @@ class ContactData extends Component {
                 },
                 value: '',
                 validation: {
-                    required: true
+                    required: true,
+                    minLength: 5
                 },
                 valid: false
             },
@@ -78,7 +81,8 @@ class ContactData extends Component {
         ingredients: null,
         price: null,    
         loading: null,
-        wasSubmitted: null
+        wasSubmitted: null,
+        areAllInputFieldsValid: null
     }
 
     componentDidMount() {
@@ -86,26 +90,54 @@ class ContactData extends Component {
             this.setState({ingredients: this.props.ingredients, price: this.props.price});
     }
 
+    componentDidUpdate() {
+        let countFilledInputs = 0;
+        for (const inputField in this.state.orderForm) {
+            if (Object.hasOwnProperty.call(this.state.orderForm, inputField)) {
+                const inputFieldData = this.state.orderForm[inputField];
+                if(inputFieldData.valid)
+                    countFilledInputs++;
+            }
+        }
+
+        const areAllInputFieldsValid = countFilledInputs === 5
+            ? true
+            : false;
+
+        // Avoid infinite update
+        if(this.state.areAllInputFieldsValid === areAllInputFieldsValid)
+            return;
+
+        this.setState({areAllInputFieldsValid});
+    }
+
+    checkValidityHandler(event, inputFieldName, value, rules) {
+        let isValid = true;
+        const updatedOrderForm = JSON.parse(JSON.stringify(this.state.orderForm));
+
+        updatedOrderForm[inputFieldName].value = event.target.value;
+
+
+        if(rules.required) {
+            isValid = value.trim() && isValid;
+        }
+
+        if(rules.minLength) {
+            isValid = value.length >= rules.minLength && isValid;
+        }
+
+        updatedOrderForm[inputFieldName].valid = isValid;
+
+        this.setState({
+            orderForm: updatedOrderForm
+        });
+    }
+
     orderHandler = (event) => {
         event.preventDefault();
         this.setState({
             loading: true, 
             wasSubmitted: true,
-        });
-
-        const updatedOrderForm = JSON.parse(JSON.stringify(this.state.orderForm));
-
-        let counterOfInputElements = 0;
-        for (const inputElement in updatedOrderForm) {
-            if (Object.hasOwnProperty.call(updatedOrderForm, inputElement)) {
-                const element = updatedOrderForm[inputElement];
-                element.value = event.target[counterOfInputElements].value;
-                counterOfInputElements++;
-                console.log("element", element);
-            }
-        }
-        this.setState({
-            orderForm: updatedOrderForm
         });
 
         const shortDate = `${moment().format('L')}\n${moment().format('LT')}`;
@@ -122,6 +154,8 @@ class ContactData extends Component {
                 date: shortDate
             }
         };
+
+        console.log(this.state.orderForm);
 
         axiosInstance.post('/orders.json', orderData)
             .then((response) => {
@@ -142,14 +176,22 @@ class ContactData extends Component {
             : null;
 
         const inputElements = [];
-        for (const key in this.state.orderForm) {
-            if (Object.hasOwnProperty.call(this.state.orderForm, key)) {
-                const element = this.state.orderForm[key];
+        for (const inputFieldName in this.state.orderForm) {
+            if (Object.hasOwnProperty.call(this.state.orderForm, inputFieldName)) {
+                const inputFieldData = this.state.orderForm[inputFieldName];
                 inputElements.push(
-                    <Input key={key} name={key} {...element.elementConfig} />
+                    <Input 
+                        onChange={(event) => this.checkValidityHandler(event, inputFieldName, inputFieldData.value, inputFieldData.validation)} 
+                        key={inputFieldName} 
+                        name={inputFieldName} 
+                        {...inputFieldData.elementConfig} />
                 );
             }
         }
+        
+        const disabled = this.state.areAllInputFieldsValid
+            ? ""
+            : { disabled: "disabled" };
 
         return(
             <div className = {CSSModule.ContactData}>
@@ -158,7 +200,8 @@ class ContactData extends Component {
                     {inputElements}
 
                     <Button
-                        style = {{ backgroundImage: "linear-gradient(rgba(186, 255, 130, 0.5), rgba(30, 255, 0, 0.25))" }}>
+                        style = {{ backgroundImage: "linear-gradient(rgba(186, 255, 130, 0.5), rgba(30, 255, 0, 0.25))" }}
+                        disabled = {disabled}>
                             Send
                     </Button>
                 </form>
