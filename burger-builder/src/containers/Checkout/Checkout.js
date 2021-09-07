@@ -43,7 +43,8 @@ class Checkout extends Component {
             else {
                 this.goBack(2.5 * 1000);
                 this.setState({ 
-                    toRender: <Fragment>
+                    toRender: 
+                        <Fragment>
                             <div className = {CSSModule.GoBack}>No ingredients added. You are being redirected, please wait...</div>
                             <LoadingSpinner />
                         </Fragment>
@@ -86,9 +87,13 @@ class Checkout extends Component {
             <Fragment>
                 {toRender}
                 <Route path={`${this.props.match.path}/contact-data`}>
-                    <ContactData 
-                        ingredients = {this.state.ingredients}
-                        price = {this.state.totalPrice}/>
+                    {
+                        this.state.wasDataPassed
+                            ? <ContactData 
+                                    ingredients = {this.state.ingredients}
+                                    price = {this.state.totalPrice}/>
+                            : null
+                    }
                 </Route>
             </Fragment>
         );

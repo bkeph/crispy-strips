@@ -1,4 +1,4 @@
-import { Component } from "react";
+import React, { Component } from "react";
 import Button from "../../../components/UI/Button/Button";
 import CSSModule from './ContactData.module.css';
 import axiosInstance from '../../../axios';
@@ -6,7 +6,14 @@ import LoadingSpinner from "../../../components/UI/LoadingSpinner/LoadingSpinner
 import moment from 'moment';
 import Input from '../../../components/UI/Input/Input';
 
+const FIELD_CHECK_INTERVAL = 1800; //ms
+
 class ContactData extends Component {
+    constructor() {
+        super();
+        this.formRef = React.createRef();
+    }
+
     state = {
         orderForm: {
             name: {
@@ -88,13 +95,24 @@ class ContactData extends Component {
     componentDidMount() {
         if(!this.state.ingredients && !this.state.price)
             this.setState({ingredients: this.props.ingredients, price: this.props.price});
+
+        // Check every *FIELD_CHECK_INTERVAL* ms if the value of the input fields have changed (added to solve the autocomplete issue that did not trigger onChange event set on <Input /> elements)
+        setInterval(() => {
+            let inputElementCounter = 0;
+            for (const inputFieldName in this.state.orderForm) {
+                if (Object.hasOwnProperty.call(this.state.orderForm, inputFieldName)) {
+                    const inputFieldData = this.state.orderForm[inputFieldName];
+                    this.checkValidityHandler(this.formRef.current[inputElementCounter].value, inputFieldName, inputFieldData.value, inputFieldData.validation);
+                }
+            }
+        }, FIELD_CHECK_INTERVAL);
     }
 
     componentDidUpdate() {
         let countFilledInputs = 0;
-        for (const inputField in this.state.orderForm) {
-            if (Object.hasOwnProperty.call(this.state.orderForm, inputField)) {
-                const inputFieldData = this.state.orderForm[inputField];
+        for (const inputFieldName in this.state.orderForm) {
+            if (Object.hasOwnProperty.call(this.state.orderForm, inputFieldName)) {
+                const inputFieldData = this.state.orderForm[inputFieldName];
                 if(inputFieldData.valid)
                     countFilledInputs++;
             }
@@ -111,12 +129,12 @@ class ContactData extends Component {
         this.setState({areAllInputFieldsValid});
     }
 
-    checkValidityHandler(event, inputFieldName, value, rules) {
+    checkValidityHandler(currentValue, inputFieldName, value, rules) {
+        // console.log(inputFieldName, value);
         let isValid = true;
         const updatedOrderForm = JSON.parse(JSON.stringify(this.state.orderForm));
 
-        updatedOrderForm[inputFieldName].value = event.target.value;
-
+        updatedOrderForm[inputFieldName].value = currentValue;
 
         if(rules.required) {
             isValid = value.trim() && isValid;
@@ -127,7 +145,6 @@ class ContactData extends Component {
         }
 
         updatedOrderForm[inputFieldName].valid = isValid;
-
         this.setState({
             orderForm: updatedOrderForm
         });
@@ -155,7 +172,7 @@ class ContactData extends Component {
             }
         };
 
-        console.log(this.state.orderForm);
+        // console.log(this.state.orderForm);
 
         axiosInstance.post('/orders.json', orderData)
             .then((response) => {
@@ -181,7 +198,7 @@ class ContactData extends Component {
                 const inputFieldData = this.state.orderForm[inputFieldName];
                 inputElements.push(
                     <Input 
-                        onChange={(event) => this.checkValidityHandler(event, inputFieldName, inputFieldData.value, inputFieldData.validation)} 
+                        /*onChange={(event) => this.checkValidityHandler(event.target.value, inputFieldName, inputFieldData.value, inputFieldData.validation)} */
                         key={inputFieldName} 
                         name={inputFieldName} 
                         {...inputFieldData.elementConfig} />
@@ -196,7 +213,7 @@ class ContactData extends Component {
         return(
             <div className = {CSSModule.ContactData}>
                 <h4>Enter your contact data:</h4>
-                <form onSubmit = {this.orderHandler}>
+                <form onSubmit = {this.orderHandler} ref = {this.formRef}>
                     {inputElements}
 
                     <Button
