@@ -28,7 +28,7 @@ class ContactData extends Component {
                     required: true,
                     minLength: 5
                 },
-                valid: false
+                valid: null
             },
             street: {
                 elementType: 'input',
@@ -42,7 +42,7 @@ class ContactData extends Component {
                     required: true,
                     minLength: 5
                 },
-                valid: false
+                valid: null
             },
             postalcode: {
                 elementType: 'input',
@@ -54,9 +54,9 @@ class ContactData extends Component {
                 value: '',
                 validation: {
                     required: true,
-                    minLength: 5
+                    minLength: 4
                 },
-                valid: false
+                valid: null
             },
             city: {
                 elementType: 'input',
@@ -67,9 +67,10 @@ class ContactData extends Component {
                 },
                 value: '',
                 validation: {
-                    required: true
+                    required: true,
+                    minLength: 3
                 },
-                valid: false
+                valid: null
             },
             email: {
                 elementType: 'input',
@@ -82,7 +83,7 @@ class ContactData extends Component {
                 validation: {
                     required: true
                 },
-                valid: false
+                valid: null
             },
         },
         ingredients: null,
@@ -101,7 +102,9 @@ class ContactData extends Component {
             let inputElementCounter = 0;
             for (const inputFieldName in this.state.orderForm) {
                 if (Object.hasOwnProperty.call(this.state.orderForm, inputFieldName)) {
+
                     const inputFieldData = this.state.orderForm[inputFieldName];
+                    
                     this.checkValidityHandler(this.formRef.current[inputElementCounter].value, inputFieldName, inputFieldData.value, inputFieldData.validation);
                 }
             }
@@ -137,11 +140,11 @@ class ContactData extends Component {
         updatedOrderForm[inputFieldName].value = currentValue;
 
         if(rules.required) {
-            isValid = value.trim() && isValid;
+            isValid = currentValue.trim() && isValid;
         }
 
         if(rules.minLength) {
-            isValid = value.length >= rules.minLength && isValid;
+            isValid = currentValue.length >= rules.minLength && isValid;
         }
 
         updatedOrderForm[inputFieldName].valid = isValid;
@@ -195,12 +198,19 @@ class ContactData extends Component {
         const inputElements = [];
         for (const inputFieldName in this.state.orderForm) {
             if (Object.hasOwnProperty.call(this.state.orderForm, inputFieldName)) {
+
                 const inputFieldData = this.state.orderForm[inputFieldName];
+
+                const isinvalid = (inputFieldData.value !== "" && inputFieldData.valid !== null && !inputFieldData.valid)
+                    ? true
+                    : null;
+
                 inputElements.push(
                     <Input 
-                        /*onChange={(event) => this.checkValidityHandler(event.target.value, inputFieldName, inputFieldData.value, inputFieldData.validation)} */
+                        onChange={(event) => this.checkValidityHandler(event.target.value, inputFieldName, inputFieldData.value, inputFieldData.validation)} 
                         key={inputFieldName} 
                         name={inputFieldName} 
+                        isinvalid={isinvalid}
                         {...inputFieldData.elementConfig} />
                 );
             }

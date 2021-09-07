@@ -1,9 +1,16 @@
-.Input {
+.InputContainer {
     margin: 16px 0;
     box-sizing: border-box;
 }
 
-.Input > input {
+.InputContainer > label {
+    display: inline-block;
+    margin-bottom: 6px;
+    font-weight: 700;
+    font-size: 0.9rem;
+}
+
+.Input {
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 4px;
@@ -12,15 +19,13 @@
     width: 100%;
 }
 
-.Input > label {
-    display: inline-block;
-    margin-bottom: 6px;
-    font-weight: 700;
-    font-size: 0.9rem;
-}
-
-.Input > input:focus,
-.Input > input:hover {
+.Input:focus,
+.Input:hover {
     background-color: #eee;
     outline: none;
+}
+
+.Invalid {
+    border: 1px solid rgb(255, 123, 123);
+    background-color: rgb(255, 233, 231);
 }
