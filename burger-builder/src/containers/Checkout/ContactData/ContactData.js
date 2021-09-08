@@ -133,7 +133,7 @@ class ContactData extends Component {
         let isValid = true;
         const updatedOrderForm = JSON.parse(JSON.stringify(this.state.orderForm));
 
-        if(currentValue === value)
+        if(currentValue === value || !rules)
             return;
 
         updatedOrderForm[inputFieldName].value = currentValue;
