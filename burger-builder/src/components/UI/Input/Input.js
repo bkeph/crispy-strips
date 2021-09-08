@@ -8,7 +8,12 @@ const Input = (props) => {
     return(
         <div className = {CSSModule.InputContainer}>
             <label>{props.label}</label>
-            <input className = {inputFieldClasses.join(" ")} {...props}/>
+            <input 
+                className = {inputFieldClasses.join(" ")} 
+                name = {props.name} 
+                type = {props.type}
+                onChange = {props.onChange}
+                placeholder = {props.placeholder} />
         </div>
     );
 }

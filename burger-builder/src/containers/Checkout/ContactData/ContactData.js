@@ -6,7 +6,7 @@ import LoadingSpinner from "../../../components/UI/LoadingSpinner/LoadingSpinner
 import moment from 'moment';
 import Input from '../../../components/UI/Input/Input';
 
-const FIELD_CHECK_INTERVAL = 1800; //ms
+// const FIELD_CHECK_INTERVAL = 1800; //ms
 
 class ContactData extends Component {
     constructor() {
@@ -97,18 +97,18 @@ class ContactData extends Component {
         if(!this.state.ingredients && !this.state.price)
             this.setState({ingredients: this.props.ingredients, price: this.props.price});
 
-        // Check every *FIELD_CHECK_INTERVAL* ms if the value of the input fields have changed (added to solve the autocomplete issue that did not trigger onChange event set on <Input /> elements)
-        setInterval(() => {
-            let inputElementCounter = 0;
-            for (const inputFieldName in this.state.orderForm) {
-                if (Object.hasOwnProperty.call(this.state.orderForm, inputFieldName)) {
+        // // Check every *FIELD_CHECK_INTERVAL* ms if the value of the input fields have changed (added to solve the autocomplete issue that did not trigger onChange event set on <Input /> elements)
+        // setInterval(() => {
+        //     let inputElementCounter = 0;
+        //     for (const inputFieldName in this.state.orderForm) {
+        //         if (Object.hasOwnProperty.call(this.state.orderForm, inputFieldName)) {
 
-                    const inputFieldData = this.state.orderForm[inputFieldName];
+        //             const inputFieldData = this.state.orderForm[inputFieldName];
                     
-                    this.checkValidityHandler(this.formRef.current[inputElementCounter].value, inputFieldName, inputFieldData.value, inputFieldData.validation);
-                }
-            }
-        }, FIELD_CHECK_INTERVAL);
+        //             this.checkValidityHandler(this.formRef.current[inputElementCounter].value, inputFieldName, inputFieldData.value, inputFieldData.validation);
+        //         }
+        //     }
+        // }, FIELD_CHECK_INTERVAL);
     }
 
     componentDidUpdate() {
@@ -136,6 +136,9 @@ class ContactData extends Component {
         // console.log(inputFieldName, value);
         let isValid = true;
         const updatedOrderForm = JSON.parse(JSON.stringify(this.state.orderForm));
+
+        if(currentValue === value)
+            return;
 
         updatedOrderForm[inputFieldName].value = currentValue;
 
@@ -196,13 +199,14 @@ class ContactData extends Component {
             : null;
 
         const inputElements = [];
+        // inputElements.push(<Input type="hidden" value="something" />);
         for (const inputFieldName in this.state.orderForm) {
             if (Object.hasOwnProperty.call(this.state.orderForm, inputFieldName)) {
 
                 const inputFieldData = this.state.orderForm[inputFieldName];
 
-                const isinvalid = (inputFieldData.value !== "" && inputFieldData.valid !== null && !inputFieldData.valid)
-                    ? true
+                const isinvalid = (inputFieldData.value !== "" && inputFieldData.valid === false)
+                    ? {isinvalid: true}
                     : null;
 
                 inputElements.push(
@@ -210,7 +214,7 @@ class ContactData extends Component {
                         onChange={(event) => this.checkValidityHandler(event.target.value, inputFieldName, inputFieldData.value, inputFieldData.validation)} 
                         key={inputFieldName} 
                         name={inputFieldName} 
-                        isinvalid={isinvalid}
+                        {...isinvalid}
                         {...inputFieldData.elementConfig} />
                 );
             }
