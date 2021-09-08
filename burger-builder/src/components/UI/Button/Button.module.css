@@ -1,4 +1,4 @@
-.button {
+.Button {
     color: rgb(117, 117, 117);
     font-size: 1rem;
     margin-left: 8px;
@@ -15,23 +15,26 @@
     flex-grow: 0;
 
     box-sizing: border-box;
-
     transition: background-color 280ms;
 }
 
-.button:hover {
+.Button:hover {
     cursor: pointer;
     background-color: #ccc;
     transition: none;
 }
 
-.button:active {
+.Button:active {
     background-color: rgb(134, 134, 134);
     transition: none;
 }
 
-.button:disabled {
+.Button:disabled {
     cursor: not-allowed;
     box-shadow: initial;
     background-color: initial;
+}
+
+.Disabled {
+    background-color: #ccc;
 }

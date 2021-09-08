@@ -39,7 +39,8 @@ const IngredientControls = () => {
             <Button
                 disabled = {disabled}
                 style = {adjacentStyling}
-                onClick = {context.displayModalHandler}>
+                onClick = {context.displayModalHandler}
+                isGoButton={true}>
                     Order
             </Button>
 

@@ -80,8 +80,9 @@ const OrderSummary = (props) => {
 
                 {/* Order button */}
                 <Button
-                    style = {{...buttonAdjacentStyling, backgroundImage: "linear-gradient(rgba(186, 255, 130, 0.5), rgba(30, 255, 0, 0.25))"}}
-                    onClick = {props.goBtnAction}>
+                    style = {buttonAdjacentStyling}
+                    onClick = {props.goBtnAction}
+                    isGoButton={true}>
                     {props.goBtnText}
                 </Button>
             </div>

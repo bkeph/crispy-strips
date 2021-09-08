@@ -90,7 +90,7 @@ class ContactData extends Component {
         price: null,    
         loading: null,
         wasSubmitted: null,
-        areAllInputFieldsValid: null
+        isFormValid: null
     }
 
     componentDidMount() {
@@ -112,28 +112,24 @@ class ContactData extends Component {
     }
 
     componentDidUpdate() {
-        let countFilledInputs = 0;
+        // let countFilledInputs = 0;
+        let isFormValid = true;
         for (const inputFieldName in this.state.orderForm) {
             if (Object.hasOwnProperty.call(this.state.orderForm, inputFieldName)) {
                 const inputFieldData = this.state.orderForm[inputFieldName];
-                if(inputFieldData.valid)
-                    countFilledInputs++;
+                isFormValid = inputFieldData.valid && isFormValid;
             }
         }
 
-        const areAllInputFieldsValid = countFilledInputs === 5
-            ? true
-            : false;
-
         // Avoid infinite update
-        if(this.state.areAllInputFieldsValid === areAllInputFieldsValid)
+        if(this.state.isFormValid === isFormValid)
             return;
 
-        this.setState({areAllInputFieldsValid});
+        // this.setState({areAllInputFieldsValid});
+        this.setState({isFormValid});
     }
 
     checkValidityHandler(currentValue, inputFieldName, value, rules) {
-        // console.log(inputFieldName, value);
         let isValid = true;
         const updatedOrderForm = JSON.parse(JSON.stringify(this.state.orderForm));
 
@@ -178,8 +174,6 @@ class ContactData extends Component {
             }
         };
 
-        // console.log(this.state.orderForm);
-
         axiosInstance.post('/orders.json', orderData)
             .then((response) => {
                 console.log("[BurgerBuilder.js] RESPONSE", response);
@@ -199,7 +193,6 @@ class ContactData extends Component {
             : null;
 
         const inputElements = [];
-        // inputElements.push(<Input type="hidden" value="something" />);
         for (const inputFieldName in this.state.orderForm) {
             if (Object.hasOwnProperty.call(this.state.orderForm, inputFieldName)) {
 
@@ -220,8 +213,8 @@ class ContactData extends Component {
             }
         }
         
-        const disabled = this.state.areAllInputFieldsValid
-            ? ""
+        const disabled = this.state.isFormValid
+            ? null
             : { disabled: "disabled" };
 
         return(
@@ -231,8 +224,8 @@ class ContactData extends Component {
                     {inputElements}
 
                     <Button
-                        style = {{ backgroundImage: "linear-gradient(rgba(186, 255, 130, 0.5), rgba(30, 255, 0, 0.25))" }}
-                        disabled = {disabled}>
+                        disabled = {disabled}
+                        isGoButton={true}>
                             Send
                     </Button>
                 </form>
