@@ -2,10 +2,11 @@ import { useContext } from 'react';
 import CSSModule from './IngredientControl.module.css';
 import StateManager from '../../StateManager/StateManager';
 import Button from '../../UI/Button/Button';
+import { connect } from 'react-redux';
 
 const IngredientControl = props => {
     const context = useContext(StateManager);
-    const disabled = context.ingredients[props.ingredient.toLowerCase()]
+    const disabled = props.ingredients[props.ingredient.toLowerCase()]
         ? ""
         : {disabled: "disabled"};
 
@@ -17,15 +18,15 @@ const IngredientControl = props => {
                         {props.ingredient}
                     </div>
                     <div className = {CSSModule.ingredientQuantity}> 
-                        {context.ingredients[props.ingredient.toLowerCase()]}
+                        {props.ingredients[props.ingredient.toLowerCase()]}
                     </div>
             </div>
             <Button 
-                onClick = {() => context.ingredientHandler("+", props.ingredient.toLowerCase())}>
+                onClick = {() => context.addIngredient(props.ingredient.toLowerCase())}>
                     +
             </Button>
             <Button 
-                onClick = {() => context.ingredientHandler("-", props.ingredient.toLowerCase())}
+                onClick = {() => context.removeIngredient(props.ingredient.toLowerCase())}
                 disabled = {disabled}>
                     −
             </Button>
@@ -33,4 +34,8 @@ const IngredientControl = props => {
     );
 };
 
-export default IngredientControl;
+const mapStateToProps = state => ({
+    ingredients: state.ingredients
+});
+
+export default connect(mapStateToProps)(IngredientControl);

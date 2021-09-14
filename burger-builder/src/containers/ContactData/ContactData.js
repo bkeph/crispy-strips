@@ -1,12 +1,11 @@
 import React, { Component } from "react";
-import Button from "../../../components/UI/Button/Button";
+import Button from "../../components/UI/Button/Button";
 import CSSModule from './ContactData.module.css';
-import axiosInstance from '../../../axios';
-import LoadingSpinner from "../../../components/UI/LoadingSpinner/LoadingSpinner";
+import axiosInstance from '../../axios';
+import LoadingSpinner from "../../components/UI/LoadingSpinner/LoadingSpinner";
 import moment from 'moment';
-import Input from '../../../components/UI/Input/Input';
-
-// const FIELD_CHECK_INTERVAL = 1800; //ms
+import Input from '../../components/UI/Input/Input';
+import { connect } from 'react-redux';
 
 class ContactData extends Component {
     constructor() {
@@ -86,33 +85,13 @@ class ContactData extends Component {
                 valid: null
             },
         },
-        ingredients: null,
-        price: null,    
         loading: null,
         wasSubmitted: null,
         isFormValid: null
     }
 
-    componentDidMount() {
-        if(!this.state.ingredients && !this.state.price)
-            this.setState({ingredients: this.props.ingredients, price: this.props.price});
-
-        // // Check every *FIELD_CHECK_INTERVAL* ms if the value of the input fields have changed (added to solve the autocomplete issue that did not trigger onChange event set on <Input /> elements)
-        // setInterval(() => {
-        //     let inputElementCounter = 0;
-        //     for (const inputFieldName in this.state.orderForm) {
-        //         if (Object.hasOwnProperty.call(this.state.orderForm, inputFieldName)) {
-
-        //             const inputFieldData = this.state.orderForm[inputFieldName];
-                    
-        //             this.checkValidityHandler(this.formRef.current[inputElementCounter].value, inputFieldName, inputFieldData.value, inputFieldData.validation);
-        //         }
-        //     }
-        // }, FIELD_CHECK_INTERVAL);
-    }
 
     componentDidUpdate() {
-        // let countFilledInputs = 0;
         let isFormValid = true;
         for (const inputFieldName in this.state.orderForm) {
             if (Object.hasOwnProperty.call(this.state.orderForm, inputFieldName)) {
@@ -125,7 +104,6 @@ class ContactData extends Component {
         if(this.state.isFormValid === isFormValid)
             return;
 
-        // this.setState({areAllInputFieldsValid});
         this.setState({isFormValid});
     }
 
@@ -162,8 +140,8 @@ class ContactData extends Component {
         const shortDate = `${moment().format('L')}\n${moment().format('LT')}`;
 
         const orderData = {
-            ingredients: {...this.state.ingredients},
-            price: this.state.price,
+            ingredients: {...this.props.ingredients},
+            price: this.props.price,
             customerData: {
                 name: event.target[0].value,
                 email: event.target[1].value,
@@ -237,4 +215,9 @@ class ContactData extends Component {
     }
 }
 
-export default ContactData;
+const mapStateToProps = state => ({
+    ingredients: state.ingredients,
+    price: state.totalPrice
+});
+
+export default connect(mapStateToProps)(ContactData);

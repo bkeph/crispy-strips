@@ -3,13 +3,14 @@ import CSSModule from './IngredientControls.module.css';
 import StateManager from '../StateManager/StateManager';
 import Button from "../UI/Button/Button";
 import { useContext } from "react";
+import { connect } from 'react-redux';
 
-const IngredientControls = () => {
+const IngredientControls = (props) => {
     const context = useContext(StateManager);
     let controlsForIngredients = [];
 
-    for (const key in context.ingredients) {
-        if (context.ingredients.hasOwnProperty(key)) {
+    for (const key in props.ingredients) {
+        if (props.ingredients.hasOwnProperty(key)) {
             controlsForIngredients.push(
                 <IngredientControl  
                     // Capitalize first letter of ingredient
@@ -33,7 +34,7 @@ const IngredientControls = () => {
             {controlsForIngredients}
             <div className = {CSSModule.priceData}>
                 <div className = {CSSModule.priceLabel}>Price</div>
-                <div>{context.totalPrice} $</div>
+                <div>{props.totalPrice} $</div>
             </div>
 
             <Button
@@ -48,4 +49,9 @@ const IngredientControls = () => {
     );
 };
 
-export default IngredientControls;
+const mapStateToProps = (state) => ({
+    ingredients: state.ingredients,
+    totalPrice: state.totalPrice
+});
+
+export default connect(mapStateToProps)(IngredientControls);

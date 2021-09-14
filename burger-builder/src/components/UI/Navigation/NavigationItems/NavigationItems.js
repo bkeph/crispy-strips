@@ -7,10 +7,6 @@ const navigationItems = (props) => (
             BurgerBuilder
         </NavigationItem>
 
-        <NavigationItem onClick = {props.onClick} path = {"/checkout"}>
-            Checkout
-        </NavigationItem>
-
         <NavigationItem onClick = {props.onClick} path = {"/orders"}>
             Orders
         </NavigationItem>
