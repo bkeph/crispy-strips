@@ -35,7 +35,7 @@ const IngredientControl = props => {
 };
 
 const mapStateToProps = state => ({
-    ingredients: state.ingredients
+    ingredients: state.burgerBuilder.ingredients
 });
 
 export default connect(mapStateToProps)(IngredientControl);

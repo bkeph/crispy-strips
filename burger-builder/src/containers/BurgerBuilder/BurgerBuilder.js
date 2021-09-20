@@ -10,7 +10,7 @@ import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
 import CSSModule from './BurgerBuilder.module.css';
 import { Route, Switch, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-import * as actions from '../../store/actions';
+import * as actionCreators from '../../store/actions/index';
 
 
 // Component definition
@@ -111,6 +111,8 @@ class BurgerBuilder extends Component {
                 An error occured while fetching data from the server. Please try again later.
             </p>;
 
+        console.log("[BurgerBuilder.js] Props:", this.props);
+
         return(
             <Fragment>
                 <StateManager.Provider
@@ -150,14 +152,19 @@ class BurgerBuilder extends Component {
     };
 };
 
-const mapStateToProps = (state) => ({
-    ingredients: state.ingredients,
-    totalPrice: state.totalPrice
-});
+const mapStateToProps = (state) => {
+    console.log(state.burgerBuilder);
+    return {
+        ingredients: state.burgerBuilder.ingredients,
+        totalPrice: state.burgerBuilder.totalPrice
+    }
+};
 
-const mapDispatchToProps = (dispatch) => ({
-    addIngredient: (ing) => dispatch({type: actions.ADD_INGREDIENT, ingredientToUpdate: ing}),
-    removeIngredient: (ing) => dispatch({type: actions.REMOVE_INGREDIENT, ingredientToUpdate: ing})
-});
+const mapDispatchToProps = (dispatch) => {
+    return {
+        addIngredient: (ing) => dispatch(actionCreators.addIngredient(ing)),
+        removeIngredient: (ing) => dispatch(actionCreators.removeIngredient(ing))
+    };
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(withErrorHandler(withRouter(BurgerBuilder), axiosInstance));

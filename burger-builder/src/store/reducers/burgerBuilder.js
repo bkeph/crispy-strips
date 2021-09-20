@@ -1,4 +1,5 @@
-import * as actions from './actions';
+import * as actions from '../actions/actionTypes';
+import updateState from '../utility/updateState';
 
 const initialState = {
     ingredients: {
@@ -21,10 +22,9 @@ function round(x) {
     return parseFloat(x.toFixed(1));
 }
 
-const reducer = (state = initialState, action) => {
+const burgerBuilder = (state = initialState, action) => {
     switch(action.type) {
         case actions.ADD_INGREDIENT:
-            console.log(state.ingredients);
             return {
                 ...state,
                 ingredients: {
@@ -50,4 +50,4 @@ const reducer = (state = initialState, action) => {
     }
 };
 
-export default reducer;
+export default burgerBuilder;

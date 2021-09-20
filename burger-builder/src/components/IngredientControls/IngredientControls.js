@@ -50,8 +50,8 @@ const IngredientControls = (props) => {
 };
 
 const mapStateToProps = (state) => ({
-    ingredients: state.ingredients,
-    totalPrice: state.totalPrice
+    ingredients: state.burgerBuilder.ingredients,
+    totalPrice: state.burgerBuilder.totalPrice
 });
 
 export default connect(mapStateToProps)(IngredientControls);
