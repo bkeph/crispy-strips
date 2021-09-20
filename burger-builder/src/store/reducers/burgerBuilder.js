@@ -22,28 +22,34 @@ function round(x) {
     return parseFloat(x.toFixed(1));
 }
 
+const addIngredient = (state, action) => {
+    return updateState(state, {
+        ingredients: {
+            ...state.ingredients,
+            [action.ingredientToUpdate]: state.ingredients[action.ingredientToUpdate] + 1
+        },
+        totalPrice: round(state.totalPrice + state.ingredients_prices[action.ingredientToUpdate])
+    });
+};
+
+const removeIngredient = (state, action) => {
+    return {
+        ...state,
+        ingredients: {
+            ...state.ingredients,
+            [action.ingredientToUpdate]: state.ingredients[action.ingredientToUpdate] - 1
+        },
+        totalPrice: round(state.totalPrice - state.ingredients_prices[action.ingredientToUpdate])
+    };
+};
+
 const burgerBuilder = (state = initialState, action) => {
     switch(action.type) {
         case actions.ADD_INGREDIENT:
-            return {
-                ...state,
-                ingredients: {
-                    ...state.ingredients,
-                    [action.ingredientToUpdate]: state.ingredients[action.ingredientToUpdate] + 1
-                },
-                totalPrice: round(state.totalPrice + state.ingredients_prices[action.ingredientToUpdate])
-            };
+            return addIngredient(state, action);
 
         case actions.REMOVE_INGREDIENT:
-            console.log(state.ingredients);
-            return {
-                ...state,
-                ingredients: {
-                    ...state.ingredients,
-                    [action.ingredientToUpdate]: state.ingredients[action.ingredientToUpdate] - 1
-                },
-                totalPrice: round(state.totalPrice - state.ingredients_prices[action.ingredientToUpdate])
-            };
+            return removeIngredient(state, action);
 
         default:
             return state;
