@@ -16,37 +16,13 @@ import * as actionCreators from '../../store/actions/index';
 // Component definition
 class BurgerBuilder extends Component {
     state = {
-        // ingredients: null, // will be fetched from server
-        // ingredients_prices: null, // will be fetched from server
-        // totalPrice: null, // will be fetched from server
         isPurchasable: false,
         showModal: false,
-        loading: false,
-        error: false,
         isCheckoutEnabled: false
     }
 
     componentDidMount() {
-    //     axiosInstance.get('/ingredients_prices.json')
-    //         .then((response) => {
-    //             if(!this.state.ingredients) {
-    //                 const INGREDIENT_PRICES = response.data;
-                    
-    //                 const INGREDIENTS = (() => {
-    //                     let ingredients = {};
-    //                     for (const key in INGREDIENT_PRICES) {
-    //                         if(key !== "base_price")
-    //                         ingredients[key] = 0;
-    //                     }
-    //                     return ingredients;
-    //                 })();
-
-    //                 this.setState({ ingredients_prices: INGREDIENT_PRICES, ingredients: INGREDIENTS, totalPrice: INGREDIENT_PRICES.base_price });
-    //             }
-    //         })
-    //         .catch((error) => {
-    //             this.setState({ error: true })
-    //         });
+        this.props.initIngredients();
     }
 
     componentDidUpdate() {
@@ -58,13 +34,13 @@ class BurgerBuilder extends Component {
         let isPurchasable = false;
 
         for (const key in this.props.ingredients) {
-            if(this.props.ingredients[key]) {
+            if (this.props.ingredients[key]) {
                 isPurchasable = true;
                 break;
             }
         }
-        if(this.state.isPurchasable !== isPurchasable)
-            this.setState({isPurchasable});
+        if (this.state.isPurchasable !== isPurchasable)
+            this.setState({ isPurchasable });
     }
 
     displayModalHandler = () => {
@@ -84,39 +60,21 @@ class BurgerBuilder extends Component {
         //     }
         // }
         // const searchParamsString = searchParams.join("&");
-        this.props.history.push({ 
+        this.props.history.push({
             pathname: "/checkout",
             // search: `?${searchParamsString}`
-         });
+        });
     }
-    
+
     render() {
-        const orderSummary = this.state.loading
-            ? <LoadingSpinner color = {"#fff"}/>
-            : <OrderSummary 
-                ingredients = {this.props.ingredients}
-                totalPrice = {this.props.totalPrice}
-                title = {"Order Summary"}
-                closeBtnText = {"Close"}
-                goBtnText = {"Checkout"}
-                closeBtnAction = {this.displayModalHandler}
-                goBtnAction = {this.toCheckoutHandler}
-                showModal = {this.state.showModal}/>;
+        const errorMessage = <p className={CSSModule.ErrorMessage}>
+            An error occured while fetching data from the server. Please try again later.
+        </p>;
 
-        const ingredientControls = this.props.ingredients
-            ? <IngredientControls />
-            : <LoadingSpinner />;
-
-        const errorMessage = <p className = {CSSModule.ErrorMessage}>
-                An error occured while fetching data from the server. Please try again later.
-            </p>;
-
-        console.log("[BurgerBuilder.js] Props:", this.props);
-
-        return(
+        return (
             <Fragment>
                 <StateManager.Provider
-                    value = {
+                    value={
                         {
                             ...this.state,
                             addIngredient: this.props.addIngredient,
@@ -127,24 +85,32 @@ class BurgerBuilder extends Component {
                             returnToMainPageHandler: this.returnToMainPageHandler
                         }
                     }>
-                        <Switch>
-                            <Route path='/' exact>
-                                <Modal 
-                                    showModal = {this.state.showModal}
-                                    displayModalHandler = {this.displayModalHandler}
-                                    >
-                                        {orderSummary}   
-                                </Modal>
+                    <Switch>
+                        <Route path='/' exact>
+                            <Modal
+                                showModal={this.state.showModal}
+                                displayModalHandler={this.displayModalHandler}
+                            >
+                                <OrderSummary
+                                    ingredients={this.props.ingredients}
+                                    totalPrice={this.props.totalPrice}
+                                    title={"Order Summary"}
+                                    closeBtnText={"Close"}
+                                    goBtnText={"Checkout"}
+                                    closeBtnAction={this.displayModalHandler}
+                                    goBtnAction={this.toCheckoutHandler}
+                                    showModal={this.state.showModal} />;
+                            </Modal>
 
-                                <Burger ingredients = {this.props.ingredients}/>
+                            <Burger ingredients={this.props.ingredients} />
 
-                                {this.state.error
-                                    ? errorMessage
-                                    : ingredientControls}
-                            </Route>
+                            {this.props.error
+                                ? errorMessage
+                                : <IngredientControls />}
+                        </Route>
 
-                            <Route render={() => <div>Page not found.</div>} />
-                        </Switch>
+                        <Route render={() => <div>Page not found.</div>} />
+                    </Switch>
                 </StateManager.Provider>
 
             </Fragment>
@@ -153,17 +119,18 @@ class BurgerBuilder extends Component {
 };
 
 const mapStateToProps = (state) => {
-    console.log(state.burgerBuilder);
     return {
         ingredients: state.burgerBuilder.ingredients,
-        totalPrice: state.burgerBuilder.totalPrice
+        totalPrice: state.burgerBuilder.totalPrice,
+        error: state.burgerBuilder.error
     }
 };
 
 const mapDispatchToProps = (dispatch) => {
     return {
         addIngredient: (ing) => dispatch(actionCreators.addIngredient(ing)),
-        removeIngredient: (ing) => dispatch(actionCreators.removeIngredient(ing))
+        removeIngredient: (ing) => dispatch(actionCreators.removeIngredient(ing)),
+        initIngredients: () => dispatch(actionCreators.initIngredients())
     };
 };
 
