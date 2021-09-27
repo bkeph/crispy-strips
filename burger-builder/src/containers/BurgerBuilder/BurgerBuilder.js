@@ -130,7 +130,8 @@ const mapDispatchToProps = (dispatch) => {
     return {
         addIngredient: (ing) => dispatch(actionCreators.addIngredient(ing)),
         removeIngredient: (ing) => dispatch(actionCreators.removeIngredient(ing)),
-        initIngredients: () => dispatch(actionCreators.initIngredients())
+        initIngredients: () => dispatch(actionCreators.initIngredients()),
+        setPurchased: () => dispatch(actionCreators.setPurchased())
     };
 };
 

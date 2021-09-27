@@ -1,6 +1,18 @@
 import * as actionTypes from '../actions/actionTypes';
 import axiosInstance from '../../axios';
 
+export const setLoadingState = () => {
+    return {
+        type: actionTypes.SET_LOADING_STATE
+    };
+};
+
+export const setPurchased = () => {
+    return {
+        type: actionTypes.SET_PURCHASED
+    };
+};
+
 const sendOrder_Sync = (orderData, id, error) => {
     return {
         type: actionTypes.SEND_ORDER,
@@ -9,12 +21,6 @@ const sendOrder_Sync = (orderData, id, error) => {
         error: error
     };
 };
-
-export const setLoadingState = () => {
-    return {
-        type: actionTypes.SET_LOADING_STATE
-    };
-}
 
 export const sendOrder = (orderData) => {
     return (dispatch) => {

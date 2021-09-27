@@ -3,7 +3,8 @@ import * as actionTypes from '../actions/actionTypes';
 const initialState = {
     orders: [],
     loading: null,
-    error: null
+    error: null,
+    purchased: false
 };
 
 const order = (state = initialState, action) => {
@@ -23,7 +24,8 @@ const order = (state = initialState, action) => {
                         id: action.id,
                         data: action.orderData
                     }),
-                    error: null
+                    error: null,
+                    purchased: true
                 };
             break;
 
@@ -31,6 +33,12 @@ const order = (state = initialState, action) => {
             return {
                 ...state,
                 loading: true
+            };
+
+        case actionTypes.SET_PURCHASED:
+            return {
+                ...state,
+                purchased: false
             };
 
         default:

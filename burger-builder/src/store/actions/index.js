@@ -6,5 +6,6 @@ export {
 
 export {
     sendOrder,
-    setLoadingState
+    setLoadingState,
+    setPurchased,
 } from './order';

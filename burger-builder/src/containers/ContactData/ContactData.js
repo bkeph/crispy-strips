@@ -8,6 +8,9 @@ import Input from '../../components/UI/Input/Input';
 import { connect } from 'react-redux';
 import * as actions from '../../store/actions/index'; 
 import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
+import {withRouter } from "react-router";
+
+const TIME_UNTIL_REDIRECT = 3000;
 
 class ContactData extends Component {
     constructor() {
@@ -87,7 +90,6 @@ class ContactData extends Component {
                 valid: null
             },
         },
-        // loading: null,
         wasSubmitted: null,
         isFormValid: null
     }
@@ -107,6 +109,16 @@ class ContactData extends Component {
             return;
 
         this.setState({isFormValid});
+    }
+
+    redirectToMainPageAfterPurchase() {
+        console.log(this.props);
+
+        if(this.props.purchased) {
+            setTimeout(() => {
+                this.props.history.push("/");
+            }, TIME_UNTIL_REDIRECT);
+        }
     }
 
     checkValidityHandler(currentValue, inputFieldName, value, rules) {
@@ -134,10 +146,7 @@ class ContactData extends Component {
 
     orderHandler = (event) => {
         event.preventDefault();
-        this.setState({
-            // loading: true, 
-            wasSubmitted: true,
-        });
+        this.setState({ wasSubmitted: true });
 
         const shortDate = `${moment().format('L')}\n${moment().format('LT')}`;
 
@@ -155,15 +164,6 @@ class ContactData extends Component {
         };
 
         this.props.sendOrder(orderData);
-        // axiosInstance.post('/orders.json', orderData)
-        //     .then((response) => {
-        //         console.log("[BurgerBuilder.js] RESPONSE", response);
-        //         this.setState({loading: false});
-        //     })
-        //     .catch((error) => {
-        //         console.error("[BurgerBuilder.js] ERROR", error);
-        //         this.setState({loading: false});
-        //     });
     }
     
     render() {
@@ -198,6 +198,9 @@ class ContactData extends Component {
             ? null
             : { disabled: "disabled" };
 
+        this.redirectToMainPageAfterPurchase();
+
+
         return(
             <div className = {CSSModule.ContactData}>
                 <h4>Enter your contact data:</h4>
@@ -221,11 +224,12 @@ class ContactData extends Component {
 const mapStateToProps = state => ({
     ingredients: state.burgerBuilder.ingredients,
     price: state.burgerBuilder.totalPrice,
-    loading: state.order.loading
+    loading: state.order.loading,
+    purchased: state.order.purchased
 });
 
 const mapDispatchToProps = dispatch => ({
-    sendOrder: (orderData) => dispatch(actions.sendOrder(orderData))
+    sendOrder: (orderData) => dispatch(actions.sendOrder(orderData)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(withErrorHandler(ContactData, axiosInstance));
+export default connect(mapStateToProps, mapDispatchToProps)(withErrorHandler(withRouter(ContactData), axiosInstance));
