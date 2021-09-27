@@ -13,10 +13,6 @@ const withErrorHandler = (WrappedComponent, axiosInstance) => {
             this.catchError();
         }
 
-        componentDidUpdate() {
-            this.catchError();
-        }
-
         componentWillUnmount() {
             axiosInstance.interceptors.request.eject( this.reqInterceptor );
             axiosInstance.interceptors.response.eject( this.resInterceptor );
@@ -25,19 +21,16 @@ const withErrorHandler = (WrappedComponent, axiosInstance) => {
         catchError() {
             // Reset any previous errors
             this.reqInterceptor = axiosInstance.interceptors.request.use((request) => {
-                this.setState({ error: null });
+                if(this.state.error)
+                    this.setState({ error: null });
                 return request;
-            }/*, (error) => {
-                this.setState({ error: error });
-            }*/);
+            });
 
             // Check for errors at response receipt
-            this.resInterceptor = axiosInstance.interceptors.response.use(response => {
-                console.log("[withErrorHandler], response:", response);
-                return response;
-            }, (error) => {
+            this.resInterceptor = axiosInstance.interceptors.response.use(response => response, (error) => {
                 console.log(error);
-                this.setState({ error: error });
+                if(!this.state.error)
+                    this.setState({ error: error });
             });
         }
 
@@ -58,8 +51,6 @@ const withErrorHandler = (WrappedComponent, axiosInstance) => {
                     </Modal>
                 )
                 : null;
-
-                console.log("error element", error);
 
             return(
                 <Fragment>

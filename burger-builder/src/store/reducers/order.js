@@ -25,6 +25,7 @@ const order = (state = initialState, action) => {
                     }),
                     error: null
                 };
+            break;
 
         case actionTypes.SET_LOADING_STATE:
             return {
