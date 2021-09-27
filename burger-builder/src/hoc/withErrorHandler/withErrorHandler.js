@@ -8,12 +8,6 @@ const withErrorHandler = (WrappedComponent, axiosInstance) => {
         state = {
             error: null
         }
-        
-        // constructor(props) {
-        //     super(props);
-        //     this.state = { error: null };
-        //     this.catchError("constructor");
-        // }
 
         componentDidMount() {
             this.catchError();
@@ -23,29 +17,36 @@ const withErrorHandler = (WrappedComponent, axiosInstance) => {
             this.catchError();
         }
 
+        componentWillUnmount() {
+            axiosInstance.interceptors.request.eject( this.reqInterceptor );
+            axiosInstance.interceptors.response.eject( this.resInterceptor );
+        }
+
         catchError() {
             // Reset any previous errors
-            axiosInstance.interceptors.request.use((request) => {
-                if(this.state.error) {
-                    this.setState({ error: null });
-                }
+            this.reqInterceptor = axiosInstance.interceptors.request.use((request) => {
+                this.setState({ error: null });
                 return request;
-            }, (error) => {
+            }/*, (error) => {
                 this.setState({ error: error });
-            });
+            }*/);
 
             // Check for errors at response receipt
-            axiosInstance.interceptors.response.use(response => response, (error) => {
+            this.resInterceptor = axiosInstance.interceptors.response.use(response => {
+                console.log("[withErrorHandler], response:", response);
+                return response;
+            }, (error) => {
+                console.log(error);
                 this.setState({ error: error });
             });
         }
 
         displayError = () => {
-            if(this.state.error)
-                this.setState({ error: null });
+            this.setState({ error: null });    
         }
 
         render() {
+            console.log("[withErrorHandler], error: ", this.state.error);
             const error = this.state.error
                 ? (
                     <Modal 
@@ -57,6 +58,8 @@ const withErrorHandler = (WrappedComponent, axiosInstance) => {
                     </Modal>
                 )
                 : null;
+
+                console.log("error element", error);
 
             return(
                 <Fragment>

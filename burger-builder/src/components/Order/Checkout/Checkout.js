@@ -1,6 +1,6 @@
 import CheckoutSummary from '../CheckoutSummary/CheckoutSummary';
 import { Component, Fragment } from 'react';
-import { withRouter, Route } from 'react-router';
+import { withRouter, Route, Redirect } from 'react-router';
 import ContactData from '../../../containers/ContactData/ContactData';
 import { connect } from 'react-redux';
 
@@ -33,19 +33,21 @@ class Checkout extends Component {
     // }
     
     render() {
-        return (
-            <Fragment>
-                <CheckoutSummary 
+        const summary = !this.props.ingredients
+            ?   <Redirect to='/' />
+            :   <Fragment>
+                    <CheckoutSummary 
                         ingredients={this.props.ingredients} 
                         totalPrice={this.props.totalPrice}
                         closeBtnAction = {this.returnToMainPage}
-                        goBtnAction = {this.toContactForm}/>
-                        
-                <Route path={`${this.props.match.path}/contact-data`}>
-                    <ContactData />
-                </Route>
-            </Fragment>
-        );
+                        goBtnAction = {this.toContactForm}/>;
+
+                    <Route path={`${this.props.match.path}/contact-data`}>
+                        <ContactData />
+                    </Route>
+                </Fragment>
+
+        return (summary);
     }
 }
 

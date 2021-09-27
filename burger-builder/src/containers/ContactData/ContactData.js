@@ -6,6 +6,8 @@ import LoadingSpinner from "../../components/UI/LoadingSpinner/LoadingSpinner";
 import moment from 'moment';
 import Input from '../../components/UI/Input/Input';
 import { connect } from 'react-redux';
+import * as actions from '../../store/actions/index'; 
+import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
 
 class ContactData extends Component {
     constructor() {
@@ -85,7 +87,7 @@ class ContactData extends Component {
                 valid: null
             },
         },
-        loading: null,
+        // loading: null,
         wasSubmitted: null,
         isFormValid: null
     }
@@ -133,7 +135,7 @@ class ContactData extends Component {
     orderHandler = (event) => {
         event.preventDefault();
         this.setState({
-            loading: true, 
+            // loading: true, 
             wasSubmitted: true,
         });
 
@@ -152,20 +154,21 @@ class ContactData extends Component {
             }
         };
 
-        axiosInstance.post('/orders.json', orderData)
-            .then((response) => {
-                console.log("[BurgerBuilder.js] RESPONSE", response);
-                this.setState({loading: false});
-            })
-            .catch((error) => {
-                console.error("[BurgerBuilder.js] ERROR", error);
-                this.setState({loading: false});
-            });
+        this.props.sendOrder(orderData);
+        // axiosInstance.post('/orders.json', orderData)
+        //     .then((response) => {
+        //         console.log("[BurgerBuilder.js] RESPONSE", response);
+        //         this.setState({loading: false});
+        //     })
+        //     .catch((error) => {
+        //         console.error("[BurgerBuilder.js] ERROR", error);
+        //         this.setState({loading: false});
+        //     });
     }
     
     render() {
         const status = this.state.wasSubmitted
-            ? this.state.loading
+            ? this.props.loading
                 ? <LoadingSpinner />
                 : "Order sent!"
             : null;
@@ -217,7 +220,12 @@ class ContactData extends Component {
 
 const mapStateToProps = state => ({
     ingredients: state.burgerBuilder.ingredients,
-    price: state.burgerBuilder.totalPrice
+    price: state.burgerBuilder.totalPrice,
+    loading: state.order.loading
 });
 
-export default connect(mapStateToProps)(ContactData);
+const mapDispatchToProps = dispatch => ({
+    sendOrder: (orderData) => dispatch(actions.sendOrder(orderData))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(withErrorHandler(ContactData, axiosInstance));
