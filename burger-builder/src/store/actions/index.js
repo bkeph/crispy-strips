@@ -6,6 +6,12 @@ export {
 
 export {
     sendOrder,
-    setLoadingState,
+    setLoadingStateOrder,
     setPurchased,
 } from './order';
+
+export {
+    fetchOrders,
+    setLoadingStateFetchOrders,
+    errorFetchOrders
+} from './fetchOrders';

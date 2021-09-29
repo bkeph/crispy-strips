@@ -27,17 +27,11 @@ const sendOrder = (state, action) => {
 };
 
 const setLoadingState = (state) => {
-    return {
-        ...state,
-        loading: true
-    };
+    return updateState(state, { loading: true });
 };
 
 const setPurchased = (state) => {
-    return {
-        ...state,
-        purchased: false
-    };
+    return updateState(state, { purchased: false })
 };
 
 // Reducer
@@ -46,7 +40,7 @@ const order = (state = initialState, action) => {
         case actionTypes.SEND_ORDER:
             return sendOrder(state, action);
 
-        case actionTypes.SET_LOADING_STATE:
+        case actionTypes.SET_LOADING_STATE_ORDER:
             return setLoadingState(state);
 
         case actionTypes.SET_PURCHASED:

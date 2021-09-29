@@ -1,9 +1,9 @@
 import * as actionTypes from '../actions/actionTypes';
 import axiosInstance from '../../axios';
 
-export const setLoadingState = () => {
+export const setLoadingStateOrder = () => {
     return {
-        type: actionTypes.SET_LOADING_STATE
+        type: actionTypes.SET_LOADING_STATE_ORDER
     };
 };
 
@@ -24,7 +24,7 @@ const sendOrder_Sync = (orderData, id, error) => {
 
 export const sendOrder = (orderData) => {
     return (dispatch) => {
-        dispatch(setLoadingState());
+        dispatch(setLoadingStateOrder());
 
         axiosInstance.post('/orders.json', orderData)
             .then((response) => {
