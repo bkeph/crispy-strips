@@ -8,12 +8,11 @@ const fetchOrders_Sync = (data) => {
     };
 };
 
-export const fetchOrders = () => {
+export const fetchOrders = (token) => {
     return dispatch => {
         dispatch(setLoadingStateFetchOrders(true));
-        console.log("here");
 
-        axiosInstance.get('/orders.json')
+        axiosInstance.get(`/orders.json?auth=${token}`)
             .then(res => {
                 dispatch(setLoadingStateFetchOrders(false));
                 dispatch(fetchOrders_Sync(res.data ? res.data : "no data"));

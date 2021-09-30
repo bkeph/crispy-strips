@@ -22,11 +22,11 @@ const sendOrder_Sync = (orderData, id, error) => {
     };
 };
 
-export const sendOrder = (orderData) => {
+export const sendOrder = (orderData, token) => {
     return (dispatch) => {
         dispatch(setLoadingStateOrder());
 
-        axiosInstance.post('/orders.json', orderData)
+        axiosInstance.post(`/orders.json?auth=${token}`, orderData)
             .then((response) => {
                 console.log("[BurgerBuilder.js] RESPONSE", response);
                 dispatch(sendOrder_Sync(orderData, response.data.name, null));

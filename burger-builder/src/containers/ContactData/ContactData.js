@@ -172,7 +172,8 @@ class ContactData extends Component {
             }
         };
 
-        this.props.sendOrder(orderData);
+        console.log(this.props.token);
+        this.props.sendOrder(orderData, this.props.token);
     }
     
     render() {
@@ -234,11 +235,12 @@ const mapStateToProps = state => ({
     ingredients: state.burgerBuilder.ingredients,
     price: state.burgerBuilder.totalPrice,
     loading: state.order.loading,
-    purchased: state.order.purchased
+    purchased: state.order.purchased,
+    token: state.auth.token
 });
 
 const mapDispatchToProps = dispatch => ({
-    sendOrder: (orderData) => dispatch(actions.sendOrder(orderData)),
+    sendOrder: (orderData, token) => dispatch(actions.sendOrder(orderData, token)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withErrorHandler(withRouter(ContactData), axiosInstance));
