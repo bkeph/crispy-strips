@@ -17,3 +17,4 @@ export const ERROR_FETCH_ORDERS = 'ERROR_FETCH_ORDERS';
 export const AUTH = 'AUTH';
 export const AUTH_RESET = 'AUTH_RESET';
 export const AUTH_FAIL = 'AUTH_FAIL';
+export const LOGOUT = 'LOGOUT';

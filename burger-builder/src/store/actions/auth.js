@@ -37,10 +37,25 @@ export const auth = (credentials, isSignup) => {
 
         axiosProcess.post('', authData)
             .then(res => {
+                dispatch(logoutTimeout(res.data.expiresIn));
                 dispatch(auth_sync(res.data.idToken, res.data.localId));
             })
             .catch(err => {
                 dispatch(authFail(err.response.data.error));
             })
     };
+};
+
+const logout = () => {
+    return {
+        type: actionTypes.LOGOUT
+    };
+};
+
+const logoutTimeout = (expirationTimeInSeconds) => {
+    return dispatch => {
+        setTimeout(() => {
+            dispatch(logout());
+        }, expirationTimeInSeconds * 1000);
+    }
 };
