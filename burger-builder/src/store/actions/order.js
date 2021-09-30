@@ -1,5 +1,5 @@
 import * as actionTypes from '../actions/actionTypes';
-import axiosInstance from '../../axios';
+import axiosInstance from '../../axios/axios';
 
 export const setLoadingStateOrder = () => {
     return {

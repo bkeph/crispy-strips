@@ -10,6 +10,10 @@ const navigationItems = (props) => (
         <NavigationItem onClick = {props.onClick} path = {"/orders"}>
             Orders
         </NavigationItem>
+
+        <NavigationItem onClick = {props.onClick} path = {"/auth"}>
+            Authentication
+        </NavigationItem>
     </ul>
 );
 

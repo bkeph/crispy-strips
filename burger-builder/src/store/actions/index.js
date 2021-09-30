@@ -15,3 +15,7 @@ export {
     setLoadingStateFetchOrders,
     errorFetchOrders
 } from './fetchOrders';
+
+export {
+    auth
+} from './auth';

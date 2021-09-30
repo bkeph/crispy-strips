@@ -4,8 +4,7 @@ import IngredientControls from '../../components/IngredientControls/IngredientCo
 import StateManager from '../../components/StateManager/StateManager';
 import Modal from "../../components/UI/Modal/Modal";
 import OrderSummary from "../../components/Burger/OrderSummary/OrderSummary";
-import axiosInstance from '../../axios';
-import LoadingSpinner from '../../components/UI/LoadingSpinner/LoadingSpinner';
+import axiosInstance from '../../axios/axios';
 import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
 import CSSModule from './BurgerBuilder.module.css';
 import { Route, Switch, withRouter } from 'react-router-dom';

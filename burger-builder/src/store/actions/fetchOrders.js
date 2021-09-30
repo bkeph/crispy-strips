@@ -1,5 +1,5 @@
 import * as actionTypes from './actionTypes';
-import axiosInstance from '../../axios';
+import axiosInstance from '../../axios/axios';
 
 const fetchOrders_Sync = (data) => {
     return {

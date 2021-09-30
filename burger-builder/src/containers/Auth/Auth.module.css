@@ -1,4 +1,4 @@
-.ContactData {
+.Auth {
     margin: 24px;
     padding: 20px;
     border: 1px solid #ccc;
@@ -10,15 +10,15 @@
     align-items: center;
 }
 
-.ContactData h4 {
+.Auth h4 {
     margin: 0 0 0 10px;
 }
 
-.ContactData input {
+.Auth input {
     display: block;
 }
 
-.ContactData Button {
+.Auth Button {
     margin: 10px;
     padding: 4px 30px;
 }

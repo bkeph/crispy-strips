@@ -1,4 +1,4 @@
-import axiosInstance from '../../axios';
+import axiosInstance from '../../axios/axios';
 import { useEffect } from 'react';
 import LoadingSpinner from '../UI/LoadingSpinner/LoadingSpinner';
 import DataList from '../Order/DataList/DataList';

@@ -1,5 +1,5 @@
 import * as actionTypes from './actionTypes'; 
-import axiosInstance from '../../axios';
+import axiosInstance from '../../axios/axios';
 
 export const addIngredient = (ing) => {
     return({

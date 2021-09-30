@@ -3,6 +3,7 @@ import BurgerBuilder from "./containers/BurgerBuilder/BurgerBuilder";
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import Checkout from './components/Order/Checkout/Checkout';
 import Orders from './components/Orders/Orders';
+import Auth from './containers/Auth/Auth';
 
 function App() {
     return (
@@ -16,6 +17,10 @@ function App() {
 
                     <Route path='/orders' exact>
                         <Orders />
+                    </Route>
+
+                    <Route path='/auth' exact>
+                        <Auth />
                     </Route>
 
                     <Route path='/' exact>

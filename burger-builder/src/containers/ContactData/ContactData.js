@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Button from "../../components/UI/Button/Button";
 import CSSModule from './ContactData.module.css';
-import axiosInstance from '../../axios';
+import axiosInstance from '../../axios/axios';
 import LoadingSpinner from "../../components/UI/LoadingSpinner/LoadingSpinner";
 import moment from 'moment';
 import Input from '../../components/UI/Input/Input';
@@ -19,6 +19,8 @@ class ContactData extends Component {
     }
 
     state = {
+        wasSubmitted: null,
+        isFormValid: null,
         orderForm: {
             name: {
                 elementType: 'input',
@@ -90,8 +92,6 @@ class ContactData extends Component {
                 valid: null
             },
         },
-        wasSubmitted: null,
-        isFormValid: null
     }
 
 
@@ -112,8 +112,6 @@ class ContactData extends Component {
     }
 
     redirectToMainPageAfterPurchase() {
-        console.log(this.props);
-
         if(this.props.purchased) {
             setTimeout(() => {
                 this.props.history.push("/");
@@ -144,21 +142,32 @@ class ContactData extends Component {
         });
     }
 
+    returnCustomerData(event) {
+        const customerData = {};
+        let index = 0;
+
+        for (const inputFieldName in this.state.orderForm) {
+            if (Object.hasOwnProperty.call(this.state.orderForm, inputFieldName)) {
+                customerData[inputFieldName] = event.target[index].value;
+                index++;
+            }
+        }
+        return customerData;
+    }
+
     orderHandler = (event) => {
         event.preventDefault();
         this.setState({ wasSubmitted: true });
 
         const shortDate = `${moment().format('L')}\n${moment().format('LT')}`;
 
+        const initialCustomerData = this.returnCustomerData(event);
+
         const orderData = {
             ingredients: {...this.props.ingredients},
             price: this.props.price,
             customerData: {
-                name: event.target[0].value,
-                email: event.target[1].value,
-                street: event.target[2].value,
-                city: event.target[3].value,
-                postalcode: event.target[4].value,
+                ...initialCustomerData,
                 date: shortDate
             }
         };
