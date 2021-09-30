@@ -6,11 +6,13 @@ import { connect } from 'react-redux';
 import withErrorHandler from "../../hoc/withErrorHandler/withErrorHandler";
 import axiosInstance from "../../axios/axios";
 import * as actions from '../../store/actions/index';
+import LoadingSpinner from '../../components/UI/LoadingSpinner/LoadingSpinner';
 
 class Auth extends Component {
     state = {
         wasSubmitted: null,
         isFormValid: null,
+        isSignup: true,
         inputs: {
             email: {
                 elementType: 'input',
@@ -108,7 +110,15 @@ class Auth extends Component {
             // date: shortDate
         };
 
-        this.props.authenticate(data);
+        this.props.authenticate(data, this.state.isSignup);
+    }
+
+    switchAuthMode = (event) => {
+        event.preventDefault();
+
+        this.setState(prevState => {
+            return { isSignup: !prevState.isSignup };
+        });
     }
 
     render() {
@@ -137,6 +147,12 @@ class Auth extends Component {
             }
         }
 
+        const status = this.props.loading
+            ?   <LoadingSpinner />
+            :   this.props.error
+                ?   <p>{this.props.error.message}</p>
+                :   null;
+
         return (
             <div className={CSSModule.Auth}>
                 <form onSubmit={this.submitHandler}>
@@ -149,14 +165,29 @@ class Auth extends Component {
                         isGoButton={true}>
                         Submit
                     </Button>
+
+                    <Button
+                        onClick = {(event) => this.switchAuthMode(event)}
+                        isGoButton={false}>
+                        Switch to {this.state.isSignup ? "Sign IN": "Sign UP"}
+                    </Button>
+
+                    <div className = {CSSModule.Status}>
+                        {status}
+                    </div>
                 </form>
             </div>
         );
     };
 }
 
-const mapDispatchToProps = dispatch => ({
-    authenticate: (credentials) => dispatch(actions.auth(credentials))
+const mapStateToProps = state => ({
+    loading: state.auth.loading,
+    error: state.auth.error
 });
 
-export default connect(null, mapDispatchToProps)(withErrorHandler(Auth, axiosInstance));
+const mapDispatchToProps = dispatch => ({
+    authenticate: (credentials, isSignup) => dispatch(actions.auth(credentials, isSignup))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(withErrorHandler(Auth, axiosInstance));

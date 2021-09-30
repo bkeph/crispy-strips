@@ -1,12 +1,19 @@
-import axiosSignUp from '../../axios/axios-signup';
+import { axiosAuthSignUp, axiosAuthSignIn } from '../../axios/axios-auth';
 import * as actionTypes from './actionTypes';
 
-const auth_sync = (authData) => {
+const auth_sync = (idToken, localId) => {
     return {
         type: actionTypes.AUTH,
-        authData
+        idToken,
+        localId
     };
 };
+
+const authReset = () => {
+    return {
+        type: actionTypes.AUTH_RESET
+    };
+}
 
 const authFail = (error) => {
     return {
@@ -15,23 +22,25 @@ const authFail = (error) => {
     };
 };
 
-export const auth = (credentials) => {
+export const auth = (credentials, isSignup) => {
     const authData = {
         ...credentials,
         returnSecureToken: true // tells whether we want the server to return an AUTH TOKEN
     };
 
-    console.log(authData);
+    const axiosProcess = isSignup
+        ?   axiosAuthSignUp
+        :   axiosAuthSignIn;
 
     return dispatch => {
-        axiosSignUp.post('', authData)
+        dispatch(authReset());
+
+        axiosProcess.post('', authData)
             .then(res => {
-                console.log(res);
-                dispatch(auth_sync(authData));
+                dispatch(auth_sync(res.data.idToken, res.data.localId));
             })
             .catch(err => {
-                console.log(err);
-                dispatch(authFail(err));
+                dispatch(authFail(err.response.data.error));
             })
     };
 };

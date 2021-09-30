@@ -15,5 +15,5 @@ export const ERROR_FETCH_ORDERS = 'ERROR_FETCH_ORDERS';
 
 // auth.js
 export const AUTH = 'AUTH';
-export const AUTH_SUCCESS = 'AUTH_SUCCESS';
+export const AUTH_RESET = 'AUTH_RESET';
 export const AUTH_FAIL = 'AUTH_FAIL';
