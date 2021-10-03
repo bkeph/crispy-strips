@@ -12,26 +12,11 @@ function App() {
             <Layout>
 
                 <Switch>
-                    <Route path='/checkout'>
-                        <Checkout />
-                    </Route>
-
-                    <Route path='/orders' exact>
-                        <Orders />
-                    </Route>
-
-                    <Route path='/auth' exact>
-                        <Auth />
-                    </Route>
-
-                    <Route path='/logout' exact>
-                        <Logout />
-                    </Route>
-
-                    <Route path='/' exact>
-                        <BurgerBuilder />
-                    </Route>
-
+                    <Route path='/checkout' component={Checkout} />
+                    <Route path='/orders' exact component={Orders} />
+                    <Route path='/auth' exact component={Auth} />
+                    <Route path='/logout' exact component={Logout} />
+                    <Route path='/' exact component={BurgerBuilder} />
                     <Route render={() => <div>Page not found.</div>} />
                 </Switch>
             </Layout>
