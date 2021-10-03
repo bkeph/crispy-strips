@@ -30,6 +30,12 @@ const reducer = (state = initState, action) => {
                 localId: action.localId
             });
 
+        case actionTypes.LOGOUT:
+            return updateState(state, {
+                token: null,
+                localId: null
+            });
+
         default:
             return updateState(state);
     }

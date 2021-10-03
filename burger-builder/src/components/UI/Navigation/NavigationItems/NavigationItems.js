@@ -1,20 +1,37 @@
+import { useContext } from "react";
 import NavigationItem from "./NavigationItem/NavigationItem";
 import CSSModule from './NavigationItems.module.css';
+import SidedrawerStateManager from '../../../SidedrawerStateManager/SidedrawerStateManager';
 
-const navigationItems = (props) => (
-    <ul className = {CSSModule.NavigationItems}>
-        <NavigationItem onClick = {props.onClick} path = {"/"}>
-            BurgerBuilder
-        </NavigationItem>
+const NavigationItems = (props) => {
+    const context = useContext(SidedrawerStateManager);
 
-        <NavigationItem onClick = {props.onClick} path = {"/orders"}>
-            Orders
-        </NavigationItem>
+    const auth = context.isAuthenticated
+        ?   (
+            <NavigationItem onClick = {props.onClick} path = {"/logout"}>
+                Logout
+            </NavigationItem>
+        )
+        :   (
+            <NavigationItem onClick = {props.onClick} path = {"/auth"}>
+                Authentication
+            </NavigationItem>
+        );
 
-        <NavigationItem onClick = {props.onClick} path = {"/auth"}>
-            Authentication
-        </NavigationItem>
-    </ul>
-);
+    return (
+        <ul className = {CSSModule.NavigationItems}>
+            <NavigationItem onClick = {props.onClick} path = {"/"}>
+                BurgerBuilder
+            </NavigationItem>
+    
+            <NavigationItem onClick = {props.onClick} path = {"/orders"}>
+                Orders
+            </NavigationItem>
 
-export default navigationItems;
+            {auth}
+
+        </ul>
+    );
+};
+
+export default NavigationItems;

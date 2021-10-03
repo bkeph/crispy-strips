@@ -3,6 +3,7 @@ import CSSModule from '../Layout/Layout.module.css';
 import Toolbar from '../../components/UI/Navigation/Toolbar/Toolbar';
 import Sidedrawer from '../../components/UI/Navigation/Sidedrawer/Sidedrawer';
 import SidedrawerStateManager from '../../components/SidedrawerStateManager/SidedrawerStateManager';
+import { connect } from 'react-redux';
 
 class Layout extends Component {
     state = {
@@ -20,6 +21,7 @@ class Layout extends Component {
                     value = {
                         {
                             ...this.state,
+                            isAuthenticated: this.props.isAuthenticated,
                             displaySidedrawerHandler: this.displaySidedrawerHandler
                         }
                     }>
@@ -38,4 +40,8 @@ class Layout extends Component {
     }
 }
 
-export default Layout;
+const mapStateToProps = state => ({
+    isAuthenticated: !!state.auth.token
+});
+
+export default connect(mapStateToProps)(Layout);

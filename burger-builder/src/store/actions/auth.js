@@ -46,7 +46,7 @@ export const auth = (credentials, isSignup) => {
     };
 };
 
-const logout = () => {
+export const logout = () => {
     return {
         type: actionTypes.LOGOUT
     };

@@ -7,3 +7,4 @@ export const axiosAuthSignUp = axios.create({
 export const axiosAuthSignIn = axios.create({
     baseURL: 'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyAyIrGwZdXQXNtMdTeV_oy0OlfFn5cCh_g'
 });
+

@@ -1,0 +1,9 @@
+.Logout > * {
+    padding: 10px;
+    margin: 0 auto;
+}
+
+.Logout {
+    display: flex;
+    flex-direction: column;
+}

@@ -17,5 +17,6 @@ export {
 } from './fetchOrders';
 
 export {
-    auth
+    auth,
+    logout
 } from './auth';
