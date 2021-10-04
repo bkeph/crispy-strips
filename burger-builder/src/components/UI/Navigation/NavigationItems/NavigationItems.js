@@ -18,15 +18,21 @@ const NavigationItems = (props) => {
             </NavigationItem>
         );
 
+    const orders = context.isAuthenticated
+        ?   (
+            <NavigationItem onClick = {props.onClick} path = {"/orders"}>
+                Orders
+            </NavigationItem>
+        )
+        :   null;
+
     return (
         <ul className = {CSSModule.NavigationItems}>
             <NavigationItem onClick = {props.onClick} path = {"/"}>
                 BurgerBuilder
             </NavigationItem>
     
-            <NavigationItem onClick = {props.onClick} path = {"/orders"}>
-                Orders
-            </NavigationItem>
+            {orders}
 
             {auth}
 

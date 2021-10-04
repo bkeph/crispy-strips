@@ -43,7 +43,10 @@ class BurgerBuilder extends Component {
     }
 
     displayModalHandler = () => {
-        this.setState((prevState) => ({ showModal: !prevState.showModal }));
+        if(this.props.isAuthenticated)
+            this.setState((prevState) => ({ showModal: !prevState.showModal }));
+        else
+            this.props.history.push('/auth');
     }
 
     toCheckoutHandler = () => {
@@ -81,7 +84,8 @@ class BurgerBuilder extends Component {
                             displayModalHandler: this.displayModalHandler,
                             orderHandler: this.orderHandler,
                             toCheckoutHandler: this.toCheckoutHandler,
-                            returnToMainPageHandler: this.returnToMainPageHandler
+                            returnToMainPageHandler: this.returnToMainPageHandler,
+                            isAuthenticated: this.props.isAuthenticated
                         }
                     }>
                     <Switch>
@@ -104,8 +108,8 @@ class BurgerBuilder extends Component {
                             <Burger ingredients={this.props.ingredients} />
 
                             {this.props.error
-                                ? errorMessage
-                                : <IngredientControls />}
+                                ?   errorMessage
+                                :   <IngredientControls />}
                         </Route>
 
                         <Route render={() => <div>Page not found.</div>} />
@@ -121,7 +125,8 @@ const mapStateToProps = (state) => {
     return {
         ingredients: state.burgerBuilder.ingredients,
         totalPrice: state.burgerBuilder.totalPrice,
-        error: state.burgerBuilder.error
+        error: state.burgerBuilder.error,
+        isAuthenticated: !!state.auth.token
     }
 };
 

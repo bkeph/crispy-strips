@@ -1,7 +1,7 @@
 import axiosInstance from '../../axios/axios';
 import { useEffect } from 'react';
-import LoadingSpinner from '../UI/LoadingSpinner/LoadingSpinner';
-import DataList from '../Order/DataList/DataList';
+import LoadingSpinner from '../../components/UI/LoadingSpinner/LoadingSpinner';
+import DataList from '../../components/Order/DataList/DataList';
 import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
 import { connect } from 'react-redux';
 import * as actions from '../../store/actions/index';
@@ -9,7 +9,7 @@ import * as actions from '../../store/actions/index';
 const Orders = (props) => {
     useEffect(() => {
         if (props.loading === null && props.orders === null) {
-            props.fetchOrders(this.props.token);
+            props.fetchOrders(props.token);
         }
 
     }, [props.loading, props.orders]);

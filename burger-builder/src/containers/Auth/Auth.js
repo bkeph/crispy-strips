@@ -7,6 +7,7 @@ import withErrorHandler from "../../hoc/withErrorHandler/withErrorHandler";
 import axiosInstance from "../../axios/axios";
 import * as actions from '../../store/actions/index';
 import LoadingSpinner from '../../components/UI/LoadingSpinner/LoadingSpinner';
+import { Redirect, withRouter } from "react-router";
 
 class Auth extends Component {
     state = {
@@ -46,6 +47,10 @@ class Auth extends Component {
     }
 
     componentDidUpdate() {
+        this.checkOverallFormValidity();
+    }
+
+    checkOverallFormValidity() {
         let isFormValid = true;
         for (const inputFieldName in this.state.inputs) {
             if (Object.hasOwnProperty.call(this.state.inputs, inputFieldName)) {
@@ -61,7 +66,7 @@ class Auth extends Component {
         this.setState({ isFormValid });
     }
 
-    checkValidityHandler(currentValue, inputFieldName, value, rules) {
+    checkFieldValidityHandler(currentValue, inputFieldName, value, rules) {
         let isValid = true;
         const updatedInputs = JSON.parse(JSON.stringify(this.state.inputs));
 
@@ -138,7 +143,7 @@ class Auth extends Component {
 
                 inputElements.push(
                     <Input
-                        onChange={(event) => this.checkValidityHandler(event.target.value, inputFieldName, inputFieldData.value, inputFieldData.validation)}
+                        onChange={(event) => this.checkFieldValidityHandler(event.target.value, inputFieldName, inputFieldData.value, inputFieldData.validation)}
                         key={inputFieldName}
                         name={inputFieldName}
                         {...isinvalid}
@@ -153,8 +158,15 @@ class Auth extends Component {
                 ?   <p>{this.props.error.message}</p>
                 :   null;
 
+        const redirect = this.props.isAuthenticated
+            ?   <Redirect to='/' />
+            :   null;
+
         return (
             <div className={CSSModule.Auth}>
+
+                {redirect}
+
                 <form onSubmit={this.submitHandler}>
                     <h4>Enter your credentials</h4>
 
@@ -183,11 +195,12 @@ class Auth extends Component {
 
 const mapStateToProps = state => ({
     loading: state.auth.loading,
-    error: state.auth.error
+    error: state.auth.error,
+    isAuthenticated: !!state.auth.token
 });
 
 const mapDispatchToProps = dispatch => ({
     authenticate: (credentials, isSignup) => dispatch(actions.auth(credentials, isSignup))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(withErrorHandler(Auth, axiosInstance));
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withErrorHandler(Auth, axiosInstance)));

@@ -42,7 +42,9 @@ const IngredientControls = (props) => {
                 style = {adjacentStyling}
                 onClick = {context.displayModalHandler}
                 isGoButton={true}>
-                    Order
+                    {context.isAuthenticated
+                        ?   "Order"
+                        :   "Sign IN to order"}
             </Button>
 
         </div>

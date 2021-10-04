@@ -5,7 +5,9 @@ const initialState = {
     ingredients: null, 
     ingredients_prices: null,
     totalPrice: null,
-    error: false
+    error: false,
+    redirectFromAuthPath: "/",
+    building: false
 };
 
 function round(x) {
@@ -18,7 +20,8 @@ const addIngredient = (state, action) => {
             ...state.ingredients,
             [action.ingredientToUpdate]: state.ingredients[action.ingredientToUpdate] + 1
         },
-        totalPrice: round(state.totalPrice + state.ingredients_prices[action.ingredientToUpdate])
+        totalPrice: round(state.totalPrice + state.ingredients_prices[action.ingredientToUpdate]),
+        building: true
     });
 };
 
@@ -28,7 +31,8 @@ const removeIngredient = (state, action) => {
             ...state.ingredients,
             [action.ingredientToUpdate]: state.ingredients[action.ingredientToUpdate] - 1
         },
-        totalPrice: round(state.totalPrice - state.ingredients_prices[action.ingredientToUpdate])
+        totalPrice: round(state.totalPrice - state.ingredients_prices[action.ingredientToUpdate]),
+        building: true
     });
 };
 
