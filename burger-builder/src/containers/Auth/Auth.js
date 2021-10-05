@@ -121,6 +121,9 @@ class Auth extends Component {
     switchAuthMode = (event) => {
         event.preventDefault();
 
+        if(this.props.building && this.props.pathFromAuth !== '/checkout')
+            this.props.setPathFromAuth('/checkout');
+
         this.setState(prevState => {
             return { isSignup: !prevState.isSignup };
         });
@@ -159,7 +162,7 @@ class Auth extends Component {
                 :   null;
 
         const redirect = this.props.isAuthenticated
-            ?   <Redirect to='/' />
+            ?   <Redirect to={this.props.pathFromAuth} />
             :   null;
 
         return (
@@ -168,7 +171,7 @@ class Auth extends Component {
                 {redirect}
 
                 <form onSubmit={this.submitHandler}>
-                    <h4>Enter your credentials</h4>
+                    <h4>{this.state.isSignup ? "Sign UP": "Sign IN"}</h4>
 
                     {inputElements}
 
@@ -196,11 +199,14 @@ class Auth extends Component {
 const mapStateToProps = state => ({
     loading: state.auth.loading,
     error: state.auth.error,
-    isAuthenticated: !!state.auth.token
+    isAuthenticated: !!state.auth.token,
+    building: state.burgerBuilder.building,
+    pathFromAuth: state.burgerBuilder.pathFromAuth
 });
 
 const mapDispatchToProps = dispatch => ({
-    authenticate: (credentials, isSignup) => dispatch(actions.auth(credentials, isSignup))
+    authenticate: (credentials, isSignup) => dispatch(actions.auth(credentials, isSignup)),
+    setPathFromAuth: (path) => dispatch(actions.setAuthReturnPath(path))
 });
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withErrorHandler(Auth, axiosInstance)));

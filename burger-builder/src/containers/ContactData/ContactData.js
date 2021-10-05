@@ -172,7 +172,6 @@ class ContactData extends Component {
             }
         };
 
-        console.log(this.props.token);
         this.props.sendOrder(orderData, this.props.token);
     }
     

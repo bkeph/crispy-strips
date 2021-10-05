@@ -2,6 +2,7 @@
 export const ADD_INGREDIENT = 'ADD_INGREDIENT';
 export const REMOVE_INGREDIENT = 'REMOVE_INGREDIENT';
 export const INIT_INGREDIENTS = 'INIT_INGREDIENTS';
+export const SET_AUTH_RETURN_PATH = 'SET_AUTH_RETURN_PATH';
 
 // order.js
 export const SEND_ORDER = 'SEND_ORDER';

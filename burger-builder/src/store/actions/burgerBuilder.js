@@ -51,3 +51,10 @@ export const initIngredients = () => {
             });
     }
 };
+
+export const setAuthReturnPath = (path) => {
+    return {
+        type: actionTypes.SET_AUTH_RETURN_PATH,
+        path
+    };
+}

@@ -6,7 +6,7 @@ const initialState = {
     ingredients_prices: null,
     totalPrice: null,
     error: false,
-    redirectFromAuthPath: "/",
+    pathFromAuth: "/",
     building: false
 };
 
@@ -39,9 +39,17 @@ const removeIngredient = (state, action) => {
 const initIngredients = (state, action) => {
     return updateState(state, {
         error: action.error,
-        ...action.initialState
+        ...action.initialState,
+        building: false,
+        pathFromAuth: "/"
     });
 };
+
+const setAuthReturnPath = (state, action) => {
+    return updateState(state, {
+        pathFromAuth: action.path
+    });
+}
 
 const burgerBuilder = (state = initialState, action) => {
     switch(action.type) {
@@ -53,6 +61,9 @@ const burgerBuilder = (state = initialState, action) => {
 
         case actions.INIT_INGREDIENTS:
             return initIngredients(state, action);
+
+        case actions.SET_AUTH_RETURN_PATH:
+            return setAuthReturnPath(state, action);
 
         default:
             return state;
