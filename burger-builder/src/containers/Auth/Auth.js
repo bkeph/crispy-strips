@@ -115,14 +115,14 @@ class Auth extends Component {
             // date: shortDate
         };
 
+        if(this.props.building && this.props.pathFromAuth !== '/checkout')
+            this.props.setPathFromAuth('/checkout');
+
         this.props.authenticate(data, this.state.isSignup);
     }
 
     switchAuthMode = (event) => {
         event.preventDefault();
-
-        if(this.props.building && this.props.pathFromAuth !== '/checkout')
-            this.props.setPathFromAuth('/checkout');
 
         this.setState(prevState => {
             return { isSignup: !prevState.isSignup };

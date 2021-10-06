@@ -20,6 +20,7 @@ function App(props) {
             <Switch>
                 <Route path='/orders' exact component={Orders} />
                 <Route path='/checkout' component={Checkout} />
+                <Route path='/auth' exact component={Auth} />
                 <Route path='/logout' exact component={Logout} />
                 <Route path='/' exact component={BurgerBuilder} />
                 <Redirect to='/' />
