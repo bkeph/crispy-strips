@@ -9,15 +9,16 @@ import * as actions from '../../store/actions/index';
 const Orders = (props) => {
     useEffect(() => {
         if (props.loading === null && props.orders === null) {
-            props.fetchOrders(props.token);
+            props.fetchOrders(props.token, props.userId);
         }
 
     }, [props.loading, props.orders]);
 
-
     const toRender = props.loading
-        ? <LoadingSpinner />
-        : <DataList orders={props.orders} />;
+        ?   <LoadingSpinner />
+        :   props.orders === "no data" || (JSON.stringify(props.orders) === JSON.stringify({}))
+            ?   <p>No previous orders.</p>
+            :   <DataList orders={props.orders} />;
 
     return (toRender);
 };
@@ -26,11 +27,12 @@ const mapStateToProps = state => ({
     loading: state.fetchOrders.loading,
     error: state.fetchOrders.error,
     orders: state.fetchOrders.orders,
-    token: state.auth.token
+    token: state.auth.token,
+    userId: state.auth.localId
 });
 
 const mapDispatchToProps = dispatch => ({
-    fetchOrders: (token) => dispatch(actions.fetchOrders(token))
+    fetchOrders: (token, userId) => dispatch(actions.fetchOrders(token, userId))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withErrorHandler(Orders, axiosInstance));

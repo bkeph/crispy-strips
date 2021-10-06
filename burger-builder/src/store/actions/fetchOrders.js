@@ -8,12 +8,15 @@ const fetchOrders_Sync = (data) => {
     };
 };
 
-export const fetchOrders = (token) => {
+export const fetchOrders = (token, userId) => {
     return dispatch => {
         dispatch(setLoadingStateFetchOrders(true));
 
-        axiosInstance.get(`/orders.json?auth=${token}`)
+        const queryParams = `?auth=${token}&orderBy="userId"&equalTo="${userId}"`;
+
+        axiosInstance.get(`/orders.json${queryParams}`)
             .then(res => {
+                console.log(res);
                 dispatch(setLoadingStateFetchOrders(false));
                 dispatch(fetchOrders_Sync(res.data ? res.data : "no data"));
             })
@@ -35,5 +38,11 @@ export const errorFetchOrders = (error) => {
     return {
         type: actionTypes.ERROR_FETCH_ORDERS,
         error
+    };
+};
+
+export const initOrders = () => {
+    return {
+        type: actionTypes.INIT_ORDERS
     };
 };

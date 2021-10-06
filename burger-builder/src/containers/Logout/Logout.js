@@ -8,11 +8,9 @@ import * as actions from '../../store/actions/index';
 const TIME_UNTIL_REDIRECT = 3000;
 
 const Logout = (props) => {
-
-    console.log(props); 
-
     useEffect(() => {
         const timer = setTimeout(() => {
+            props.resetOrders();
             props.logout();
             props.history.push('/');
         }, TIME_UNTIL_REDIRECT);
@@ -32,7 +30,8 @@ const Logout = (props) => {
 };
 
 const mapDispatchToProps = dispatch => ({
-    logout: () => dispatch(actions.logout())
+    logout: () => dispatch(actions.logout()),
+    resetOrders: () => dispatch(actions.initOrders())
 });
 
 export default withRouter(connect(null, mapDispatchToProps)(Logout));

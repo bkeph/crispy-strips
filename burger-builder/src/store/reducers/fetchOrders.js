@@ -17,6 +17,9 @@ const fetchOrders = (state = initState, action) => {
 
         case actionTypes.ERROR_FETCH_ORDERS:
             return updateState(state, { error: action.error });
+
+        case actionTypes.INIT_ORDERS:
+            return updateState(state, { orders: null, loading: null, error: null });
         
         default:
             return state;

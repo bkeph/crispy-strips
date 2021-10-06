@@ -16,6 +16,11 @@ class ContactData extends Component {
     constructor() {
         super();
         this.formRef = React.createRef();
+        this.redirectTimer = {
+            timer: setTimeout(() => {
+                this.props.history.push("/");
+            }, TIME_UNTIL_REDIRECT)
+        }; 
     }
 
     state = {
@@ -94,6 +99,9 @@ class ContactData extends Component {
         },
     }
 
+    componentWillUnmount() {
+        clearTimeout(this.redirectTimer.timer);
+    }
 
     componentDidUpdate() {
         let isFormValid = true;
@@ -113,9 +121,7 @@ class ContactData extends Component {
 
     redirectToMainPageAfterPurchase() {
         if(this.props.purchased) {
-            setTimeout(() => {
-                this.props.history.push("/");
-            }, TIME_UNTIL_REDIRECT);
+            this.redirectTimer.timer();
         }
     }
 
@@ -169,7 +175,8 @@ class ContactData extends Component {
             customerData: {
                 ...initialCustomerData,
                 date: shortDate
-            }
+            },
+            userId: this.props.userId
         };
 
         this.props.sendOrder(orderData, this.props.token);
@@ -235,7 +242,8 @@ const mapStateToProps = state => ({
     price: state.burgerBuilder.totalPrice,
     loading: state.order.loading,
     purchased: state.order.purchased,
-    token: state.auth.token
+    token: state.auth.token,
+    userId: state.auth.localId
 });
 
 const mapDispatchToProps = dispatch => ({

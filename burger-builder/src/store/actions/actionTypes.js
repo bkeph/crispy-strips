@@ -13,6 +13,7 @@ export const SET_PURCHASED = "SET_PURCHASED";
 export const FETCH_ORDERS = 'FETCH_ORDERS';
 export const SET_LOADING_STATE_FETCH_ORDERS = 'SET_LOADING_STATE_FETCH_ORDERS';
 export const ERROR_FETCH_ORDERS = 'ERROR_FETCH_ORDERS';
+export const INIT_ORDERS = 'INIT_ORDERS';
 
 // auth.js
 export const AUTH = 'AUTH';

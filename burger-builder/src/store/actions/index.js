@@ -14,10 +14,12 @@ export {
 export {
     fetchOrders,
     setLoadingStateFetchOrders,
-    errorFetchOrders
+    errorFetchOrders,
+    initOrders
 } from './fetchOrders';
 
 export {
     auth,
-    logout
+    logout,
+    checkForToken
 } from './auth';
