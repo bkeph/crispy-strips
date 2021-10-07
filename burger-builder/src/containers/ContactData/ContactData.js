@@ -1,14 +1,16 @@
+import { withRouter } from "react-router";
+import { connect } from 'react-redux';
+import moment from 'moment';
 import React, { Component } from "react";
+
 import Button from "../../components/UI/Button/Button";
 import CSSModule from './ContactData.module.css';
 import axiosInstance from '../../axios/axios';
 import LoadingSpinner from "../../components/UI/LoadingSpinner/LoadingSpinner";
-import moment from 'moment';
 import Input from '../../components/UI/Input/Input';
-import { connect } from 'react-redux';
-import * as actions from '../../store/actions/index'; 
+import * as actions from '../../store/actions/index';
 import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
-import {withRouter } from "react-router";
+import { checkValidity, checkOverallFormValidity, returnInputData, renderInputElements } from "../../shared/utility";
 
 const TIME_UNTIL_REDIRECT = 3000;
 
@@ -16,11 +18,14 @@ class ContactData extends Component {
     constructor() {
         super();
         this.formRef = React.createRef();
+        this.timerId = null;
         this.redirectTimer = {
-            timer: setTimeout(() => {
-                this.props.history.push("/");
-            }, TIME_UNTIL_REDIRECT)
-        }; 
+            timer: () => {
+                this.timerId = setTimeout(() => {
+                    this.props.history.push("/");
+                }, TIME_UNTIL_REDIRECT)
+            }
+        };
     }
 
     state = {
@@ -100,65 +105,32 @@ class ContactData extends Component {
     }
 
     componentWillUnmount() {
-        clearTimeout(this.redirectTimer.timer);
+        clearTimeout(this.timerId);
+    }
+
+    innerCheckOverallFormValidity() {
+        const isFormValid = checkOverallFormValidity(this.state.orderForm);
+
+        // Avoid infinite update
+        if (this.state.isFormValid === isFormValid)
+            return;
+
+        this.setState({ isFormValid });
     }
 
     componentDidUpdate() {
-        let isFormValid = true;
-        for (const inputFieldName in this.state.orderForm) {
-            if (Object.hasOwnProperty.call(this.state.orderForm, inputFieldName)) {
-                const inputFieldData = this.state.orderForm[inputFieldName];
-                isFormValid = inputFieldData.valid && isFormValid;
-            }
-        }
-
-        // Avoid infinite update
-        if(this.state.isFormValid === isFormValid)
-            return;
-
-        this.setState({isFormValid});
+        this.innerCheckOverallFormValidity();
     }
 
     redirectToMainPageAfterPurchase() {
-        if(this.props.purchased) {
+        if (this.props.purchased) {
             this.redirectTimer.timer();
         }
     }
 
-    checkValidityHandler(currentValue, inputFieldName, value, rules) {
-        let isValid = true;
-        const updatedOrderForm = JSON.parse(JSON.stringify(this.state.orderForm));
-
-        if(currentValue === value || !rules)
-            return;
-
-        updatedOrderForm[inputFieldName].value = currentValue;
-
-        if(rules.required) {
-            isValid = currentValue.trim() && isValid;
-        }
-
-        if(rules.minLength) {
-            isValid = currentValue.length >= rules.minLength && isValid;
-        }
-
-        updatedOrderForm[inputFieldName].valid = isValid;
-        this.setState({
-            orderForm: updatedOrderForm
-        });
-    }
-
-    returnCustomerData(event) {
-        const customerData = {};
-        let index = 0;
-
-        for (const inputFieldName in this.state.orderForm) {
-            if (Object.hasOwnProperty.call(this.state.orderForm, inputFieldName)) {
-                customerData[inputFieldName] = event.target[index].value;
-                index++;
-            }
-        }
-        return customerData;
+    checkValidityHandler = (...args) => {
+        const updatedOrderForm = checkValidity(...args);
+        this.setState({ orderForm: updatedOrderForm });
     }
 
     orderHandler = (event) => {
@@ -167,10 +139,10 @@ class ContactData extends Component {
 
         const shortDate = `${moment().format('L')}\n${moment().format('LT')}`;
 
-        const initialCustomerData = this.returnCustomerData(event);
+        const initialCustomerData = returnInputData(event, this.state.orderForm);
 
         const orderData = {
-            ingredients: {...this.props.ingredients},
+            ingredients: { ...this.props.ingredients },
             price: this.props.price,
             customerData: {
                 ...initialCustomerData,
@@ -181,7 +153,7 @@ class ContactData extends Component {
 
         this.props.sendOrder(orderData, this.props.token);
     }
-    
+
     render() {
         const status = this.state.wasSubmitted
             ? this.props.loading
@@ -189,27 +161,29 @@ class ContactData extends Component {
                 : "Order sent!"
             : null;
 
-        const inputElements = [];
-        for (const inputFieldName in this.state.orderForm) {
-            if (Object.hasOwnProperty.call(this.state.orderForm, inputFieldName)) {
+        // const inputElements = [];
+        // for (const inputFieldName in this.state.orderForm) {
+        //     if (Object.hasOwnProperty.call(this.state.orderForm, inputFieldName)) {
 
-                const inputFieldData = this.state.orderForm[inputFieldName];
+        //         const inputFieldData = this.state.orderForm[inputFieldName];
 
-                const isinvalid = (inputFieldData.value !== "" && inputFieldData.valid === false)
-                    ? {isinvalid: true}
-                    : null;
+        //         const isinvalid = (inputFieldData.value !== "" && inputFieldData.valid === false)
+        //             ? { isinvalid: true }
+        //             : null;
 
-                inputElements.push(
-                    <Input 
-                        onChange={(event) => this.checkValidityHandler(event.target.value, inputFieldName, inputFieldData.value, inputFieldData.validation)} 
-                        key={inputFieldName} 
-                        name={inputFieldName} 
-                        {...isinvalid}
-                        {...inputFieldData.elementConfig} />
-                );
-            }
-        }
-        
+        //         inputElements.push(
+        //             <Input
+        //                 onChange={(event) => this.checkValidityHandler(this.state.orderForm, event.target.value, inputFieldName, inputFieldData.value, inputFieldData.validation)}
+        //                 key={inputFieldName}
+        //                 name={inputFieldName}
+        //                 {...isinvalid}
+        //                 {...inputFieldData.elementConfig} />
+        //         );
+        //     }
+        // }
+
+        const inputElements = renderInputElements(this.state.orderForm, Input, this.checkValidityHandler);
+
         const disabled = this.state.isFormValid
             ? null
             : { disabled: "disabled" };
@@ -217,19 +191,19 @@ class ContactData extends Component {
         this.redirectToMainPageAfterPurchase();
 
 
-        return(
-            <div className = {CSSModule.ContactData}>
+        return (
+            <div className={CSSModule.ContactData}>
                 <h4>Enter your contact data:</h4>
-                <form onSubmit = {this.orderHandler} ref = {this.formRef}>
+                <form onSubmit={this.orderHandler} ref={this.formRef}>
                     {inputElements}
 
                     <Button
-                        disabled = {disabled}
+                        disabled={disabled}
                         isGoButton={true}>
-                            Send
+                        Send
                     </Button>
                 </form>
-                <div className = {CSSModule.Status}>
+                <div className={CSSModule.Status}>
                     {status}
                 </div>
             </div>

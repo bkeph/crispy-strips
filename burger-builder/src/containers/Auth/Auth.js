@@ -1,13 +1,15 @@
+import { Redirect, withRouter } from "react-router";
+import { connect } from 'react-redux';
 import { Component } from "react";
+
 import Input from "../../components/UI/Input/Input";
 import Button from "../../components/UI/Button/Button";
 import CSSModule from './Auth.module.css';
-import { connect } from 'react-redux';
 import withErrorHandler from "../../hoc/withErrorHandler/withErrorHandler";
 import axiosInstance from "../../axios/axios";
 import * as actions from '../../store/actions/index';
 import LoadingSpinner from '../../components/UI/LoadingSpinner/LoadingSpinner';
-import { Redirect, withRouter } from "react-router";
+import { checkValidity, checkOverallFormValidity, returnInputData, renderInputElements } from "../../shared/utility";
 
 class Auth extends Component {
     state = {
@@ -47,17 +49,11 @@ class Auth extends Component {
     }
 
     componentDidUpdate() {
-        this.checkOverallFormValidity();
+        this.innerCheckOverallFormValidity();
     }
 
-    checkOverallFormValidity() {
-        let isFormValid = true;
-        for (const inputFieldName in this.state.inputs) {
-            if (Object.hasOwnProperty.call(this.state.inputs, inputFieldName)) {
-                const inputFieldData = this.state.inputs[inputFieldName];
-                isFormValid = inputFieldData.valid && isFormValid;
-            }
-        }
+    innerCheckOverallFormValidity() {
+        const isFormValid = checkOverallFormValidity(this.state.inputs);
 
         // Avoid infinite update
         if (this.state.isFormValid === isFormValid)
@@ -66,40 +62,11 @@ class Auth extends Component {
         this.setState({ isFormValid });
     }
 
-    checkFieldValidityHandler(currentValue, inputFieldName, value, rules) {
-        let isValid = true;
-        const updatedInputs = JSON.parse(JSON.stringify(this.state.inputs));
-
-        if (currentValue === value || !rules)
-            return;
-
-        updatedInputs[inputFieldName].value = currentValue;
-
-        if (rules.required) {
-            isValid = currentValue.trim() && isValid;
-        }
-
-        if (rules.minLength) {
-            isValid = currentValue.length >= rules.minLength && isValid;
-        }
-
-        updatedInputs[inputFieldName].valid = isValid;
+    checkFieldValidityHandler(...args) {
+        const updatedInputs = checkValidity(...args);
         this.setState({
             inputs: updatedInputs
         });
-    }
-
-    returnCustomerData(event) {
-        const inputData = {};
-        let index = 0;
-
-        for (const inputFieldName in this.state.inputs) {
-            if (Object.hasOwnProperty.call(this.state.inputs, inputFieldName)) {
-                inputData[inputFieldName] = event.target[index].value;
-                index++;
-            }
-        }
-        return inputData;
     }
 
     submitHandler = (event) => {
@@ -108,7 +75,7 @@ class Auth extends Component {
 
         // const shortDate = `${moment().format('L')}\n${moment().format('LT')}`;
 
-        const initialCustomerData = this.returnCustomerData(event);
+        const initialCustomerData = returnInputData(event, this.state.inputs);
 
         const data = {
             ...initialCustomerData,
@@ -134,26 +101,7 @@ class Auth extends Component {
             ? null
             : { disabled: "disabled" };
 
-        const inputElements = [];
-        for (const inputFieldName in this.state.inputs) {
-            if (Object.hasOwnProperty.call(this.state.inputs, inputFieldName)) {
-
-                const inputFieldData = this.state.inputs[inputFieldName];
-
-                const isinvalid = (inputFieldData.value !== "" && inputFieldData.valid === false)
-                    ? { isinvalid: true }
-                    : null;
-
-                inputElements.push(
-                    <Input
-                        onChange={(event) => this.checkFieldValidityHandler(event.target.value, inputFieldName, inputFieldData.value, inputFieldData.validation)}
-                        key={inputFieldName}
-                        name={inputFieldName}
-                        {...isinvalid}
-                        {...inputFieldData.elementConfig} />
-                );
-            }
-        }
+        const inputElements = renderInputElements(this.state.inputs, Input, this.checkFieldValidityHandler);
 
         const status = this.props.loading
             ?   <LoadingSpinner />
