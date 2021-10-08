@@ -16,7 +16,6 @@ export const fetchOrders = (token, userId) => {
 
         axiosInstance.get(`/orders.json${queryParams}`)
             .then(res => {
-                console.log(res);
                 dispatch(setLoadingStateFetchOrders(false));
                 dispatch(fetchOrders_Sync(res.data ? res.data : "no data"));
             })

@@ -5,9 +5,7 @@ import React from 'react';
 
 const Modal = (props) => {
     //Render Modal only when showModal changes
-    useEffect(() => {
-        // console.log("[Modal.js] useEffect (componentDidUpdate)");
-    }, [props.showModal]);
+    useEffect(() => {}, [props.showModal]);
 
     return (
         <Fragment>

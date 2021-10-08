@@ -28,11 +28,9 @@ export const sendOrder = (orderData, token) => {
 
         axiosInstance.post(`/orders.json?auth=${token}`, orderData)
             .then((response) => {
-                console.log("[BurgerBuilder.js] RESPONSE", response);
                 dispatch(sendOrder_Sync(orderData, response.data.name, null));
             })
             .catch((error) => {
-                console.error("[BurgerBuilder.js] ERROR", error);
                 dispatch(sendOrder_Sync(orderData, null, error));
             });
     }

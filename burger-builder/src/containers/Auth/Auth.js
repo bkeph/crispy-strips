@@ -52,7 +52,7 @@ class Auth extends Component {
         this.innerCheckOverallFormValidity();
     }
 
-    innerCheckOverallFormValidity() {
+    innerCheckOverallFormValidity = () => {
         const isFormValid = checkOverallFormValidity(this.state.inputs);
 
         // Avoid infinite update
@@ -62,7 +62,7 @@ class Auth extends Component {
         this.setState({ isFormValid });
     }
 
-    checkFieldValidityHandler(...args) {
+    checkFieldValidityHandler = (...args) => {
         const updatedInputs = checkValidity(...args);
         this.setState({
             inputs: updatedInputs

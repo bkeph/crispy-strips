@@ -28,7 +28,6 @@ const withErrorHandler = (WrappedComponent, axiosInstance) => {
 
             // Check for errors at response receipt
             this.resInterceptor = axiosInstance.interceptors.response.use(response => response, (error) => {
-                console.log(error);
                 if(!this.state.error)
                     this.setState({ error: error });
             });
