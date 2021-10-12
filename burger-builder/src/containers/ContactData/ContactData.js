@@ -190,7 +190,6 @@ class ContactData extends Component {
 
         this.redirectToMainPageAfterPurchase();
 
-
         return (
             <div className={CSSModule.ContactData}>
                 <h4>Enter your contact data:</h4>

@@ -31,7 +31,7 @@ function App(props) {
 				</Suspense>
 			</Route>
 
-			<Route path="/checkout" exact>
+			<Route path="/checkout">
 				<Suspense fallback={<LoadingSpinner/>}>
 					<CheckoutAsync />
 				</Suspense>
@@ -49,13 +49,13 @@ function App(props) {
 				</Suspense>
 			</Route>
 
-			<Route path="/" exact>
+			<Route path="/">
 				<Suspense fallback={<LoadingSpinner/>}>
 					<BurgerBuilderAsync />
 				</Suspense>
 			</Route>
 
-			<Redirect to="/" />
+			{/* <Redirect to="/" /> */}
 			{/* <Route render={() => <div>Page not found.</div>} /> */}
 		</Switch>
 	) : (
@@ -66,13 +66,13 @@ function App(props) {
 				</Suspense>
 			</Route>
 
-			<Route path="/" exact>
+			<Route path="/">
 				<Suspense fallback={<LoadingSpinner/>}>
 					<BurgerBuilderAsync />
 				</Suspense>
 			</Route>
 
-			<Redirect to="/" />
+			{/* <Redirect to="/" /> */}
 			{/* <Route render={() => <div>Page not found.</div>} /> */}
 		</Switch>
 	);

@@ -1,9 +1,11 @@
-import CheckoutSummary from '../CheckoutSummary/CheckoutSummary';
-import { Component, Fragment } from 'react';
+import { Component, Fragment, lazy, Suspense } from 'react';
 import { withRouter, Route, Redirect } from 'react-router';
-import ContactData from '../../../containers/ContactData/ContactData';
 import { connect } from 'react-redux';
 
+import CheckoutSummary from '../CheckoutSummary/CheckoutSummary';
+import LoadingSpinner from '../../UI/LoadingSpinner/LoadingSpinner';
+
+const ContactDataAsync = lazy(() => import('../../../containers/ContactData/ContactData'));
 
 class Checkout extends Component {
     returnToMainPage = () => {
@@ -40,10 +42,12 @@ class Checkout extends Component {
                         ingredients={this.props.ingredients} 
                         totalPrice={this.props.totalPrice}
                         closeBtnAction = {this.returnToMainPage}
-                        goBtnAction = {this.toContactForm}/>;
+                        goBtnAction = {this.toContactForm} />;
 
                     <Route path={`${this.props.match.path}/contact-data`}>
-                        <ContactData />
+                        <Suspense fallback={<LoadingSpinner/>}>
+                            <ContactDataAsync />
+                        </Suspense>
                     </Route>
                 </Fragment>
 
@@ -56,4 +60,4 @@ const mapStateToProps = state => ({
     totalPrice: state.burgerBuilder.totalPrice
 });
 
-export default connect(mapStateToProps)(withRouter(Checkout));
+export default withRouter(connect(mapStateToProps)(Checkout));
